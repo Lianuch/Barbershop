@@ -1,29 +1,26 @@
-import mongoose from "mongoose"
-import express from "express"
+
+import mongoose from "mongoose";
+import express from "express";
+import bodyParser from "body-parser";
 import { DB_URL, Port } from "./config/config";
 import { barberRouter } from "./routes/barbersRoutes";
-const app = express()
 
-app.use("/api/barbers",barberRouter)
-const main = async () =>{
-    try{
-        mongoose.connect(DB_URL)
-        console.log("Connected to DB");
-        
-        app.listen(Port,()=>{
-            console.log(`Server started on port ${Port}`);
-            
-        })
+const main = async () => {
+  try {
+    const app = express();
 
-    }
-    catch(e){
-        console.log(e);
-        
-    }
-}
-main()
+    await mongoose.connect(DB_URL);
+    console.log("Connected to DB");
 
-process.on("SIGINT", async ()=>{
-    await mongoose.disconnect()
-    process.exit()
-})
+    app.use(bodyParser.json({limit:"500kb"}));
+    app.use("/barbers", barberRouter);
+
+    app.listen(Port, () => {
+      console.log("Server started on port 3000");
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+main();
