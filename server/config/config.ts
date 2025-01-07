@@ -1,5 +1,3 @@
-import dotenv from "dotenv"
-dotenv.config() 
 
 const Port = 3000
 const  Db_Name = "barbershop"
