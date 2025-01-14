@@ -14,3 +14,5 @@ const deleteBarber = async(id: string) => {
     const response = await http.delete(`api/barbers/${id}`);
     return response.data;
 }
+
+export { getBarbers, createBarber, deleteBarber };

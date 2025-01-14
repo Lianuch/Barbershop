@@ -7,9 +7,9 @@ const Footer = () => {
   return (
     <div className=" bg-black text-white">
 
-      <div className="container h-32 flex justify-center items-center gap-4">
+      <div className=" h-32 flex justify-center items-center gap-4">
         <a className="hover:scale-90 " href="">
-        <FaInstagram />
+        <FaInstagram  />
         </a>
         <a className="hover:scale-90 " href="">
         <IoCall />
