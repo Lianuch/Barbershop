@@ -4,7 +4,8 @@ export const BarbersPage = () => {
   const { barber } = useBarbers();
 
   return (
-    <div>
+    <div >
+
       <ul>
         {barber.map((b) => {
           return (

@@ -9,7 +9,7 @@ export const HomePage = () => {
     <>
     <Header/>  
     <About/>
-    {/* <BarberList/>  */}
+    <BarberList/> 
     <Contacts/>
     <Footer/>
     </>

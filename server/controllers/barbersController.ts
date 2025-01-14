@@ -37,4 +37,19 @@ const deleteBarber = async (req: Request, res: Response) => {
   }
 };
 
-export { getBarbers, addBarber, deleteBarber };
+const updateBarber = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { name, surname } = req.body;
+  try {
+    const barber = await Barber.findByIdAndUpdate(
+      id,
+      { name, surname },
+      { new: true }
+    );
+    res.status(200).json(barber);
+  } catch (e) {
+    resStatus500(res, e);
+  }
+};
+
+export { getBarbers, addBarber, deleteBarber, updateBarber };
