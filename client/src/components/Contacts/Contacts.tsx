@@ -4,7 +4,7 @@ import { LuMapPin } from "react-icons/lu";
 
 export const Contacts = () => {
   return (
-    <div className="bg-black text-white p-4 " id="contacts">
+    <div className=" bg-black text-white p-4 " id="contacts">
       <h1 className="text-5xl text-center mb-8">Contacts</h1>
       <div className="mt-4 grid sm:grid-cols-3 gap-4 mb-4">
         <div className="flex flex-col items-center">
