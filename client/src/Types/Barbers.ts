@@ -1,5 +1,6 @@
 export type Barbers = {
-    id: string,
+    _id: string,
     name: string,
-    surname: string
+    surname: string,
+    barberCategory: string
 }

@@ -1,24 +1,22 @@
 export const About = () => {
-
   return (
-    <div
-      id="about"
-      className="bg-no-repeat bg-cover bg-temp  bg-fixed p-4">
-      <div className="container h-96 flex items-center">
-        <div className="grid grid-cols-12  w-full ">
-          <div className="col-span-4 flex items-center justify-center mt-6">
-            <h1 className="text-5xl">About Bliss</h1>
-          </div>
-          <p className="col-span-8 text-[20px] text-center p-2 mt-6 ">
-            Bliss Barbershop: Where Classic Cuts Meet Modern Style. Step into
-            our men's barbershop for a grooming experience like no other. Our
-            skilled barbers blend traditional techniques with contemporary
-            trends to deliver sharp, sophisticated looks tailored to every
-            gentleman's individual style. Join us and discover the art of
-            refined grooming.
-          </p>
-        </div>
+   
+<div className="w-full p-4 py-4">
+  <div className="mx-auto ps-4 max-w-4xl">
+    <div className="flex flex-col lg:flex-row items-center justify-between h-auto lg:h-80 space-y-4 lg:space-y-0 lg:space-x-6">
+      <div className="flex w-full justify-center lg:justify-start">
+        <h1 className="text-5xl text-center ">Bliss Barbershop</h1>
+      </div>
+      <div>
+        <p className="text-xl max-w-xl lg:max-w-2xl text-justify ">
+          Where Classic Cuts Meet Modern Style. Step into our men's barbershop for a grooming experience like no other. Our skilled barbers blend traditional techniques with contemporary trends to deliver sharp, sophisticated looks tailored to every gentleman's individual style. Join us and discover the art of refined grooming.
+        </p>
       </div>
     </div>
+  </div>
+</div>
+
+
+  
   );
 };

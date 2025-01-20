@@ -13,6 +13,12 @@ const barbersSchema = new mongoose.Schema({
         minlength: 3,
         maxlength:20
     },
+    barberCategory:{
+        type: String,
+        required: true,
+        minlength: 3,
+        maxlength:12
+    }
     
 })
 

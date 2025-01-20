@@ -1,11 +1,12 @@
 import express from "express";
-import { addBarber, deleteBarber, getBarbers } from "../controllers/barbersController";
+import { addBarber, deleteBarber, getBarbers, updateBarber } from "../controllers/barbersController";
+import { barberValidation } from "../middleware/barberValidation";
 
 const barberRouter = express.Router();
-const jsonParser = express.json();
 
-barberRouter.get("/",getBarbers)
-barberRouter.post("/",jsonParser,addBarber)
-barberRouter.delete("/:id",deleteBarber)
+barberRouter.get("/", getBarbers);
+barberRouter.post("/", barberValidation, addBarber);
+barberRouter.delete("/:id", deleteBarber);
+barberRouter.put("/:id", barberValidation, updateBarber);
 
-export {barberRouter};
+export { barberRouter };
