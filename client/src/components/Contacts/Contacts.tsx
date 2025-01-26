@@ -1,15 +1,18 @@
+import { useTranslation } from "react-i18next";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoMdTime } from "react-icons/io";
 import { LuMapPin } from "react-icons/lu";
 
 export const Contacts = () => {
+    const { t } = useTranslation();
+  
   return (
     <div className=" bg-black text-white p-4 " id="contacts">
-      <h1 className="text-5xl text-center mb-8">Contacts</h1>
+      <h1 className="text-5xl text-center mb-8">{t("contacts")}</h1>
       <div className="mt-4 grid sm:grid-cols-3 gap-4 mb-4">
         <div className="flex flex-col items-center">
           <LuMapPin style={{ fontSize: "40px" }} />
-          <p className="mt-4"> Syhivska street, 12A, Lviv</p>
+          <p className="mt-4"> {t("streetAdress")}</p>
         </div>
         <div className="flex flex-col items-center">
           <IoMdTime style={{ fontSize: "40px" }} />
@@ -17,7 +20,7 @@ export const Contacts = () => {
         </div>
         <div className="flex flex-col items-center">
           <FaPhoneAlt style={{ fontSize: "40px" }} />
-          <p className="mt-4">Phone: +38 (066) 123-45-67</p>
+          <p className="mt-4">{t("phone")}</p>
         </div>
       </div>
 

@@ -1,14 +1,18 @@
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
+import { Language } from "../Language/Language";
 
 export const NavLinks = () => {
+  const { t } = useTranslation();
+
   return (
     <>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/barbers">Barbers</NavLink>
-      <NavLink to="/about">About</NavLink>
-      <NavLink to="/contacts">Contacts</NavLink>
-      <NavLink to="/booking">Book now</NavLink>
-
+      <NavLink to="/">{t("home")}</NavLink>
+      <NavLink to="/barbers">{t("barbers")}</NavLink>
+      <NavLink to="/about">{t("about")}</NavLink>
+      <NavLink to="/contacts">{t("contacts")}</NavLink>
+      <NavLink to="/booking">{t("booking")}</NavLink>
+      <Language/>
     </>
   );
 };

@@ -22,7 +22,7 @@ const Footer = () => {
         <MdLocationPin />
         </a>
 
-        <p className="text-lg">© Bliss BARBERSHOP 2025</p>
+        <p className="text-lg">© Bliss Barbershop 2025</p>
       </div>
     </div>
   );

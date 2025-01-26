@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import { NavLinks } from "../NavLinks/NavLinks";
 import { useState } from "react";
 import { IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
+import { Language } from "../Language/Language";
+import { useTranslation } from "react-i18next";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,26 +13,31 @@ export const Header = () => {
     setIsOpen(!isOpen);
   };
 
+  const { t } = useTranslation();
+
+
   return (
-     <nav className="w-full  sticky top-0 bg-black text-white "> 
+     <nav className="w-full z-20 sticky top-0 bg-black text-white "> 
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="md:hidden">
             <h1 className="text-xl flex items-center font font-medium ">
-              Menu <IoIosArrowRoundForward size={25} />
+              {t("menu")} <IoIosArrowRoundForward size={25} />
             </h1>
           </div>
 
           <div className="text-xl flex flex-row w-full justify-between ">
             <div className=" hidden md:flex font-bold space-x-4">
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/barbers">Barbers</NavLink>
-              <NavLink to="/about">About</NavLink>
-              <NavLink to="/contacts">Contacts</NavLink>
+              <NavLink to="/">{t("home")}</NavLink>
+              <NavLink to="/barbers">{t("barbers")}</NavLink>
+              <NavLink to="/about">{t("about")}</NavLink>
+              <NavLink to="/contacts">{t("contacts")}</NavLink>
             </div>
             <div className="hidden md:block">
               <div className="flex ml-10 items-baseline space-x-2">
-                <NavLink to="/booking">Book now</NavLink>
+                <NavLink to="/booking">{t("booking")}</NavLink>
+                <Language/>
+
               </div>
             </div>
           </div>

@@ -3,6 +3,7 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { fetchBarbers } from "../../slices/barbersSlice";
 import { Barber } from "../Barber/Barber";
+import { useTranslation } from "react-i18next";
 
 export const BarberList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -15,11 +16,12 @@ export const BarberList: React.FC = () => {
   useEffect(() => {
     dispatch(fetchBarbers());
   }, [dispatch]);
+  const { t } = useTranslation();
 
   return (
-    <div className="">
+    <div className="my-8">
       <div className=" max-w-7xl mx-auto">
-        <h1 className="text-5xl py-6 text-center mb-8">Meet the Masters</h1>
+        <h1 className="text-5xl py-6 text-center mb-8">{t("meetBarbers")}</h1>
 
         {loading && <p className="text-center">Loading...</p>}
         {error && <p className="text-center text-red">Error: {error}</p>}
