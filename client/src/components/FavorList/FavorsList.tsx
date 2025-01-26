@@ -8,10 +8,10 @@ import { useTranslation } from "react-i18next";
 export const FavorsList = () => {
   const dispatch = useAppDispatch();
   const { favors, loading, error } = useAppSelector((state) => state.favors);
+  const { t,i18n } = useTranslation();
   useEffect(() => {
-    dispatch(fetchFavors());
-  }, [dispatch]);
-  const { t } = useTranslation();
+    dispatch(fetchFavors(i18n.language));
+  }, [dispatch, i18n.language]);
 
   return (
     <div className="bg-black p-4">
@@ -21,9 +21,9 @@ export const FavorsList = () => {
 
       <div className="hidden sm:flex flex-row justify-center text-white text-lg">
         <div className="flex jusfitify-between gap-4">
-          <button className="hover:scale-90">Barber</button>
-          <button className="hover:scale-90">Top barber</button>
-          <button className="hover:scale-90">Prime barber</button>
+          <button className="text-2xl hover:scale-90 ">Barber</button>
+          <button className="text-2xl hover:scale-90 ">Top barber</button>
+          <button className="text-2xl hover:scale-90 ">Prime barber</button>
         </div>
       </div>
 
@@ -37,7 +37,7 @@ export const FavorsList = () => {
           </option>
           <option className="text-black" value="topBarber">
             Prime barber
-          </option>
+          </option> 
         </select>
       </div>
 

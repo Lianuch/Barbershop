@@ -1,8 +1,8 @@
 import { Favors } from "../Types/Favors";
 import http from "./httpCommon";
 
-const getFavors = async () => {
-    const response = await http.get("http://localhost:5000/favors");
+const getFavors = async (lang="ua") => {
+    const response = await http.get(`http://localhost:5000/favors?lang=${lang}`);
     return response.data;
 }
 

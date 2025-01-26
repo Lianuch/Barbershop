@@ -3,8 +3,8 @@ import { FavorsState } from "../Types/FavorState";
 import { Favors } from "../Types/Favors";
 import { getFavors } from "../Services/favorsService";
 
-const fetchFavors = createAsyncThunk<Favors[]>("favors/fetchFavors", async()=>{
-    return getFavors();
+const fetchFavors = createAsyncThunk<Favors[],string>("favors/fetchFavors", async(lang)=>{
+    return getFavors(lang);
 })
 const initialState: FavorsState = {
   favors: [],

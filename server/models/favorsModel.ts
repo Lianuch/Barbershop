@@ -2,16 +2,34 @@ import mongoose from "mongoose";
 
 const favorsSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 25,
+    ua:{
+      type: String,
+      required: true,
+      minlength: 3,
+      maxlength: 25,
+    },
+    en:{
+
+      type: String,
+      required: true,
+      minlength: 3,
+      maxlength: 25,
+    }
   },
   time: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 6,
+    ua: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 6,
+    },
+    en:{
+
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 6,
+    }
   },
   price: {
     type: Number,

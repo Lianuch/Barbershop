@@ -2,12 +2,21 @@ import { Barber } from "../models/barbersModel";
 import { NextFunction, Request, Response } from "express";
 import { cloudinary } from "../config/cloudinaryConfig";
 const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
+  const lang = req.query.lang || "ua";
   try {
     const barbers = await Barber.find();
     if (!barbers.length) {
       return res.status(404).json({ error: "Barbers not found" });
     }
-    res.status(200).json(barbers);
+    const localizedBarbers = barbers.map((barber) => ({
+      _id: barber._id,
+      name: barber.name[lang],
+      surname: barber.surname[lang],
+      barberCategory: barber.barberCategory[lang],
+      image: barber.image,
+    }));
+
+    res.status(200).json(localizedBarbers);
   } catch (e) {
     next(e);
   }

@@ -1,8 +1,8 @@
 import { Barbers } from "../Types/Barbers";
 import http from "./httpCommon";
 
-const getBarbers = async () => {
-    const response = await http.get("http://localhost:5000/barbers");
+const getBarbers = async (lang="ua") => {
+    const response = await http.get(`http://localhost:5000/barbers?lang=${lang}`);
     
     return response.data;
 }

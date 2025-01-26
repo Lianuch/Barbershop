@@ -12,11 +12,11 @@ export const BarberList: React.FC = () => {
     loading,
     error,
   } = useAppSelector((state) => state.barbers);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    dispatch(fetchBarbers());
-  }, [dispatch]);
-  const { t } = useTranslation();
+    dispatch(fetchBarbers(i18n.language));
+  }, [dispatch, i18n.language]);
 
   return (
     <div className="my-8">

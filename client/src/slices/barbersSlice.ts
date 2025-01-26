@@ -3,8 +3,8 @@ import { getBarbers } from "../Services/barbersService";
 import { BarbersState } from "../Types/BarbersState";
 import { Barbers } from "../Types/Barbers";
 
-const fetchBarbers = createAsyncThunk<Barbers[]>("barbers/fetchBarbers", async () => {
-  return getBarbers();
+const fetchBarbers = createAsyncThunk<Barbers[], string>("barbers/fetchBarbers", async (lang) => {
+  return getBarbers(lang);
 });
 
 const initialState: BarbersState = {
