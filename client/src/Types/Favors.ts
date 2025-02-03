@@ -1,6 +1,10 @@
 export type Favors={
     _id: string,
-    name: string,
     time: string,
-    price: number
+    price: number,
+    favorTranslations:{
+        _id: string,
+        language: string,
+        name:string,   
+    }[]
 } 

@@ -1,5 +1,5 @@
 import express from "express";
-import { addBarber, deleteBarber, getBarbers, updateBarber } from "../controllers/barbersController";
+import { addBarber, deleteBarber, getBarbers, updateBarber } from "../controllers/barbers";
 import { barberValidation } from "../middleware/barberValidation";
 import { upload } from "../config/cloudinaryConfig";
 

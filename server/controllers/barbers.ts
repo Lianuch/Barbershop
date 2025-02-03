@@ -1,22 +1,33 @@
-import { Barber } from "../models/barbersModel";
 import { NextFunction, Request, Response } from "express";
+import { BarberTranslation } from "../models/barberTranslations";
 import { cloudinary } from "../config/cloudinaryConfig";
+import Barber from "../models/barbers";
+import Visit from "../models/visit";
+
 const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
-  const lang = req.query.lang || "ua";
+  const { language } = req.query;
+
   try {
-    const barbers = await Barber.find();
-    if (!barbers.length) {
+    const barbers = await Barber.find()
+      .populate("barberCategory", "categoryName")
+      // .populate({
+      //   path: "translation",
+      //   match: { language: language ?? "en" },
+      //   select: "language name surname barber",
+      // })
+      .populate(
+        "translation",
+      "language name surname barber",
+      )
+      .populate("visits", "date comment client")
+      .select("-__v")
+
+
+    if (!barbers || barbers.length === 0) {
       return res.status(404).json({ error: "Barbers not found" });
     }
-    const localizedBarbers = barbers.map((barber) => ({
-      _id: barber._id,
-      name: barber.name[lang],
-      surname: barber.surname[lang],
-      barberCategory: barber.barberCategory[lang],
-      image: barber.image,
-    }));
 
-    res.status(200).json(localizedBarbers);
+    res.status(200).json(barbers);
   } catch (e) {
     next(e);
   }
@@ -24,12 +35,16 @@ const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
 
 const addBarber = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, surname, barberCategory, image } = req.body;
-  
-    const barber = new Barber({ name, surname, barberCategory, image });
+    const { image, barberCategory, translation, visits } = req.body;
+    const barber = new Barber({ image, barberCategory, translation, visits });
+
+    if (!barber) {
+      return res.status(404).json({ error: "Missing fields" });
+    }
+
     await barber.save();
 
-    res.status(200).json(barber);
+    res.status(201).json(barber);
   } catch (e) {
     next(e);
   }
@@ -42,6 +57,8 @@ const deleteBarber = async (
 ) => {
   try {
     const { id } = req.params;
+    await BarberTranslation.deleteMany({ barber: id });
+    await Visit.deleteMany({ barber: id });
     const barber = await Barber.findByIdAndDelete(id);
     if (!barber) {
       return res.status(404).json({ error: "Barber not found" });
@@ -58,7 +75,7 @@ const updateBarber = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { name, surname, barberCategory, image } = req.body;
+  const { image, barberCategory, translation, visits } = req.body;
   try {
     const barber = await Barber.findById(id);
     if (!barber) {
@@ -74,13 +91,22 @@ const updateBarber = async (
       });
       updatedImage = result.secure_url;
     }
-    
 
     const updatedBarber = await Barber.findByIdAndUpdate(
       id,
-      { name, surname, barberCategory, image: updatedImage },
+      { image: updatedImage, barberCategory, translation, visits },
       { new: true }
     );
+
+    if (translation) {
+      for (const trans of translation) {
+        await BarberTranslation.findOneAndUpdate(
+          { barber: id, language: trans.language },
+          { name: trans.name, surname: trans.surname },
+          { upsert: true }
+        );
+      }
+    }
 
     res.status(200).json(updatedBarber);
   } catch (e) {
