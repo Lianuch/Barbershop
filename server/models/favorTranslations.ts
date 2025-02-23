@@ -13,7 +13,7 @@ const favorTranslationsSchema = new mongoose.Schema({
   },
 
   favor: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,  
     ref: "Favor",
   },
 });

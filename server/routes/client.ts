@@ -1,11 +1,22 @@
 import express from "express";
-import { Client } from "../models/client";
-import { addClient, getClients } from "../controllers/client";
-import { clientValidation } from "../middleware/clientValidation";
+import client from "../controllers/client";
 
-const clientRouter = express.Router()
+import { body } from "express-validator";
+import { authMiddleware } from "../middleware/authMiddleware";
 
-clientRouter.get("/", getClients)
-clientRouter.post("/",clientValidation, addClient)
+const clientRouter = express.Router();
 
-export {clientRouter}
+clientRouter.post(
+  "/registration",
+  body("email").isEmail(),
+  body("password").isLength({ min: 6 }),
+  client.registration
+);
+
+clientRouter.post('/login', client.login)
+clientRouter.post('/logout', client.logout)
+clientRouter.get("/activate/:link", client.activate);  
+clientRouter.get('/refresh', client.refresh)
+clientRouter.get("/", authMiddleware, client.getClients); 
+
+export { clientRouter };

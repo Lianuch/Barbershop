@@ -3,18 +3,24 @@
     "start": "npx ts-node app.ts"
   },
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.3",
+    "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "gridfs-stream": "^1.1.1",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.12.0",
     "mongoose": "^8.9.3",
-    "multer": "^1.4.4"
+    "multer": "^1.4.4",
+    "nodemailer": "^6.10.0",
+    "uuid": "^11.1.0",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/dotenv": "^6.1.1",
     "@types/node": "^22.10.5",
     "typescript": "^5.7.2"

@@ -9,7 +9,7 @@ const getFavors = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const favors = await Favor.find()
     .populate("visits", "date comment")
-    .populate("favorTranslations","language name")
+    .populate("favorTranslations", "language name")
     .populate("BarberCategoryFavor")
     .select("-__v")
 
