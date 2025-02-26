@@ -5,6 +5,7 @@ import { useState } from "react";
 import { IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
 import { Language } from "../Language/Language";
 import { useTranslation } from "react-i18next";
+import { UserProfile } from "../UserProfile/UserProfile";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +38,7 @@ export const Header = () => {
               <div className="flex ml-10 items-baseline space-x-2">
                 <NavLink to="/booking">{t("booking")}</NavLink>
                 <Language/>
-
+                <UserProfile/>
               </div>
             </div>
           </div>

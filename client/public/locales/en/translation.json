@@ -11,7 +11,14 @@
  "phone":"Phone: +38 (066) 123-45-67",
  "favors":"Favors",
 
-
   "aboutTitle": "Bliss Barbershop",
-  "aboutDescription": "Where Classic Cuts Meet Modern Style. Step into our men's barbershop for a grooming experience like no other. Our skilled barbers blend traditional techniques with contemporary trends to deliver sharp, sophisticated looks tailored to every gentleman's individual style. Join us and discover the art of refined grooming."
+  "aboutDescription": "Where Classic Cuts Meet Modern Style. Step into our men's barbershop for a grooming experience like no other. Our skilled barbers blend traditional techniques with contemporary trends to deliver sharp, sophisticated looks tailored to every gentleman's individual style. Join us and discover the art of refined grooming.",
+
+  "loginTitle":"Login to your account",
+  "dontHaveAccount":"Don't have an account?",
+  "login":"Login",
+  "signup":"Sign up",
+  "createAccount":"Create an account"
+
+
 }
