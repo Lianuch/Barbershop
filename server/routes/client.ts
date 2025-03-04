@@ -6,8 +6,7 @@ import { authMiddleware } from "../middleware/authMiddleware";
 
 const clientRouter = express.Router();
 
-clientRouter.post(
-  "/registration",
+clientRouter.post("/registration",
   body("email").isEmail(),
   body("password").isLength({ min: 6 }),
   client.registration

@@ -3,7 +3,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { PasswordProps } from "../../interfaces/PasswordProps";
 
 
-export const PasswordInput: React.FC<PasswordProps> = ({ name, onChange, onBlur, value }) => {
+export const PasswordInput: React.FC<PasswordProps> = ({ name, onChange,  value }) => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -15,7 +15,6 @@ export const PasswordInput: React.FC<PasswordProps> = ({ name, onChange, onBlur,
         type={showPassword ? "text" : "password"}
         name={name} 
         onChange={onChange}
-        onBlur={onBlur}
         value={value}
         className="text-black rounded-md  flex-grow outline-none px-2 py-0.5"
         placeholder="Password"

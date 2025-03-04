@@ -7,12 +7,23 @@ export const NavLinks = () => {
 
   return (
     <>
-      <NavLink to="/">{t("home")}</NavLink>
-      <NavLink to="/barbers">{t("barbers")}</NavLink>
-      <NavLink to="/about">{t("about")}</NavLink>
-      <NavLink to="/contacts">{t("contacts")}</NavLink>
-      <NavLink to="/booking">{t("booking")}</NavLink>
-      <Language/>
+      {[
+        { to: "/", label: t("home") },
+        { to: "/barbers", label: t("barbers") },
+        { to: "/about", label: t("about") },
+        { to: "/contacts", label: t("contacts") },
+        { to: "/booking", label: t("booking") },
+      ].map(({ to, label }) => (
+        <NavLink
+          key={to}
+          to={to}
+          className="hover:scale-95 transition-transform duration-200"
+        >
+          {label}
+        </NavLink>
+      ))}
+
+      <Language />
     </>
   );
 };

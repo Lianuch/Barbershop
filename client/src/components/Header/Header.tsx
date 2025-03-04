@@ -5,7 +5,8 @@ import { useState } from "react";
 import { IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
 import { Language } from "../Language/Language";
 import { useTranslation } from "react-i18next";
-import { UserProfile } from "../UserProfile/UserProfile";
+import { AuthForm } from "../AuthForm/AuthForm";
+import { Exit } from "../Exit/Exit";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,9 +17,8 @@ export const Header = () => {
 
   const { t } = useTranslation();
 
-
   return (
-     <nav className="w-full z-20 sticky top-0 bg-black text-white "> 
+    <nav className="w-full z-20 sticky top-0 bg-black text-white ">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="md:hidden">
@@ -29,16 +29,32 @@ export const Header = () => {
 
           <div className="text-xl flex flex-row w-full justify-between ">
             <div className=" hidden md:flex font-bold space-x-4">
-              <NavLink to="/">{t("home")}</NavLink>
-              <NavLink to="/barbers">{t("barbers")}</NavLink>
-              <NavLink to="/about">{t("about")}</NavLink>
-              <NavLink to="/contacts">{t("contacts")}</NavLink>
+              {[
+                { to: "/", label: t("home") },
+                { to: "/barbers", label: t("barbers") },
+                { to: "/about", label: t("about") },
+                { to: "/contacts", label: t("contacts") },
+              ].map(({ to, label }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  className="hover:scale-95 transition-transform duration-200"
+                >
+                  {label}
+                </NavLink>
+              ))}
             </div>
+
+       
+
             <div className="hidden md:block">
               <div className="flex ml-10 items-baseline space-x-2">
+
                 <NavLink to="/booking">{t("booking")}</NavLink>
-                <Language/>
-                <UserProfile/>
+                
+                <Language />
+                <AuthForm />
+                <Exit/>
               </div>
             </div>
           </div>
