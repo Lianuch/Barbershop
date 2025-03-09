@@ -75,7 +75,7 @@ export const SignupPage: React.FC<SignupProps> = ({ closeModal, switchToLogin })
               Create an account
             </button>
             <div className="text-center text-xl hover:scale-95 hover:text-blue-500">
-              <button onClick={switchToLogin} >Login</button>
+              <button type="button" onClick={switchToLogin} >Login</button>
             </div>
             {error && <div className="text-red-500 text-center">{error}</div>}
 

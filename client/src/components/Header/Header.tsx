@@ -1,5 +1,5 @@
 import { IoMenu } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { NavLinks } from "../NavLinks/NavLinks";
 import { useState } from "react";
 import { IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
@@ -7,18 +7,32 @@ import { Language } from "../Language/Language";
 import { useTranslation } from "react-i18next";
 import { AuthForm } from "../AuthForm/AuthForm";
 import { Exit } from "../Exit/Exit";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [IsExitVisible, setIsExitVisible] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const { t } = useTranslation();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const { isAuth } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const handleProfile = () => {
+    if (isAuth) {
+      navigate("/profile");
+    } else {
+      setShowLoginModal(true);
+    }
+  };
 
   return (
-    <nav className="w-full z-20 sticky top-0 bg-black text-white ">
+    <nav className="w-full z-20 sticky top-0 bg-black text-white rounded-b-lg ">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="md:hidden">
@@ -51,10 +65,16 @@ export const Header = () => {
               <div className="flex ml-10 items-baseline space-x-2">
 
                 <NavLink to="/booking">{t("booking")}</NavLink>
-                
                 <Language />
+
+              <div onClick={handleProfile}>
                 <AuthForm />
-                <Exit/>
+              
+              </div>
+
+                {/* {isAuth && <Exit setIsExitVisible={setIsExitVisible} />} */}
+                
+              
               </div>
             </div>
           </div>
