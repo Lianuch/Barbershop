@@ -2,8 +2,17 @@ import { IoCall } from "react-icons/io5";
 import { FaInstagram } from "react-icons/fa";
 import { MdLocationPin } from "react-icons/md";
 import { MdOutlineEventNote } from "react-icons/md";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
+  const [date, setDate] = useState(new Date());
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDate(new Date());
+    }, 10000);
+    return ()=> clearInterval(interval);
+  })
+
   return (
     <div className=" bg-black text-white">
 
@@ -22,7 +31,7 @@ const Footer = () => {
         <MdLocationPin />
         </a>
 
-        <p className="text-lg">© Bliss BARBERSHOP 2025</p>
+        <p className="text-lg">© Bliss Barbershop {date.getFullYear()}</p>
       </div>
     </div>
   );

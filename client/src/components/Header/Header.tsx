@@ -1,36 +1,80 @@
 import { IoMenu } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { NavLinks } from "../NavLinks/NavLinks";
 import { useState } from "react";
 import { IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
+import { Language } from "../Language/Language";
+import { useTranslation } from "react-i18next";
+import { AuthForm } from "../AuthForm/AuthForm";
+import { Exit } from "../Exit/Exit";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [IsExitVisible, setIsExitVisible] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const { t } = useTranslation();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const { isAuth } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const handleProfile = () => {
+    if (isAuth) {
+      navigate("/profile");
+    } else {
+      setShowLoginModal(true);
+    }
+  };
+
   return (
-     <nav className="w-full  sticky top-0 bg-black text-white "> 
+    <nav className="w-full z-20 sticky top-0 bg-black text-white rounded-b-lg ">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="md:hidden">
             <h1 className="text-xl flex items-center font font-medium ">
-              Menu <IoIosArrowRoundForward size={25} />
+              {t("menu")} <IoIosArrowRoundForward size={25} />
             </h1>
           </div>
 
           <div className="text-xl flex flex-row w-full justify-between ">
             <div className=" hidden md:flex font-bold space-x-4">
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/barbers">Barbers</NavLink>
-              <NavLink to="/about">About</NavLink>
-              <NavLink to="/contacts">Contacts</NavLink>
+              {[
+                { to: "/", label: t("home") },
+                { to: "/barbers", label: t("barbers") },
+                { to: "/about", label: t("about") },
+                { to: "/contacts", label: t("contacts") },
+              ].map(({ to, label }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  className="hover:scale-95 transition-transform duration-200"
+                >
+                  {label}
+                </NavLink>
+              ))}
             </div>
+
+       
+
             <div className="hidden md:block">
               <div className="flex ml-10 items-baseline space-x-2">
-                <NavLink to="/booking">Book now</NavLink>
+
+                <NavLink to="/booking">{t("booking")}</NavLink>
+                <Language />
+
+              <div onClick={handleProfile}>
+                <AuthForm />
+              
+              </div>
+
+                {/* {isAuth && <Exit setIsExitVisible={setIsExitVisible} />} */}
+                
+              
               </div>
             </div>
           </div>

@@ -9,7 +9,7 @@ export const BarbersPage = () => {
       <ul>
         {barber.map((b) => {
           return (
-            <li key={b.id}>
+            <li key={b._id}>
               {b.name} | {b.surname}
             </li>
           );
