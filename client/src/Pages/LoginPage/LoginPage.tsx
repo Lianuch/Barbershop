@@ -9,8 +9,6 @@ import { loginClient } from "../../slices/authThunks/loginClient";
 
 import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import { ValidationSchema } from "../../schemas";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const LoginPage: React.FC<LoginProps> = ({
   closeModal,
@@ -93,9 +91,9 @@ export const LoginPage: React.FC<LoginProps> = ({
                 >
                   {loading ? t("loading") : t("login")}
                 </button>
-                {error && (
+                {/* {error && (
                   <div className="text-red-500 text-center">{error}</div>
-                )}
+                )} */}
               </div>
             </div>
           </div>

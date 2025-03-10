@@ -13,4 +13,8 @@ export default class AuthService {
   static async logout() {
     return $api.post("/clients/logout");
   }
+  static async activate(link:string) {
+    return $api.get(`/clients/activate/${link}`);
+  }
+
 }

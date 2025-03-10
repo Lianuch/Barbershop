@@ -14,7 +14,7 @@ export const UserProfile = () => {
  const navigate =  useNavigate(); 
   return (
     <div className=" text-black flex justify-center ">
-      <div className="max-w-[1200px] w-full   rounded-lg p-6">
+      <div className="max-w-[1000px] w-full  bg-slate-200 rounded-lg p-6">
         <div>
           <h1 className="text-3xl mb-4">Welcome</h1>
           <p className="text-gray-700 text-sm">
@@ -48,11 +48,17 @@ export const UserProfile = () => {
 
           {/* Information Boxes */}
           <h1 className="text-3xl text-center">Your visits</h1>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-4">
             <div className="p-4 bg-gray-100 rounded-lg shadow">
               <p>
                 JavaScript arrays are resizable and can contain a mix of
                 different data types.
+              </p>
+            </div>
+            <div className="p-4 bg-gray-100 rounded-lg shadow">
+              <p>
+                When those characteristics are undesirable, use typed arrays
+                instead.
               </p>
             </div>
             <div className="p-4 bg-gray-100 rounded-lg shadow">
