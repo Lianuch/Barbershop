@@ -2,14 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import AuthService from "../../Services/AuthService";
 import { setAuth, setClient } from "../authSlice";
 
-export const registerUser = createAsyncThunk(
-  "auth/register",
-  async (
-    { email, password }: { email: string; password: string },
-    { dispatch, rejectWithValue }
-  ) => {
+export const registerUser = createAsyncThunk("auth/register", 
+  async ({ name,email, password }: { name: string; email: string; password: string },{ dispatch, rejectWithValue }) => {
     try {
-      const response = await AuthService.registration(email, password);
+      const response = await AuthService.registration(name, email, password);
       console.log(response);
       localStorage.setItem("token", response.data.accessToken);
 

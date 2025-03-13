@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
 
 export interface IClient extends Document {
   _id: string;
@@ -12,7 +11,11 @@ export interface IClient extends Document {
 }
 
 const clientSchema = new mongoose.Schema<IClient>({
-
+  name: {
+    type: String,
+    required: true,
+    minlength: 2,
+  },
   email: {
     type: String,
     required: true,

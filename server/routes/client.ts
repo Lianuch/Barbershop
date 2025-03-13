@@ -1,5 +1,6 @@
 import express from "express";
-import client from "../controllers/client";
+// import client from "../controllers/client";
+import client from "../controllers/authController";
 
 import { body } from "express-validator";
 import { authMiddleware } from "../middleware/authMiddleware";

@@ -17,7 +17,7 @@ export const UserProfile: React.FC = () => {
         navigate("/");
         return;
       }
-  
+
       try {
         const response = await ClientService.fetchClient(token);
 
@@ -31,25 +31,25 @@ export const UserProfile: React.FC = () => {
         setClient(null);
       }
     };
-  
+
     fetchClient();
     const interval = setInterval(() => {
       setDate(new Date());
     }, 10000);
     return () => clearInterval(interval);
   }, [navigate]);
-  
+
 
   const cardAnimation = {
     hidden: {
       x: -100,
       opacity: 0,
     },
-    visible: (custom: number) => ({
+    visible: {
       x: 0,
       opacity: 1,
       transition: { delay: 0.4, duration: 0.55 },
-    }),
+    },
   };
   const textAnimation = {
     hidden: {
@@ -97,7 +97,7 @@ export const UserProfile: React.FC = () => {
         <motion.div
           variants={textAnimation}
           custom={3}
-          className="mt-2 mb-2 w-full rounded-md h-10 bg-[linear-gradient(90deg,rgba(2,0,36,1)_0%,rgba(174,209,238,1)_0%,rgba(193,148,233,1)_58%)]"
+          className="mt-2 mb-2 w-full rounded-md h-10 bg-gradient-to-br from-[#4f4654] via-[#625867] to-[#625867]"
         ></motion.div>
 
         <hr />
@@ -111,20 +111,14 @@ export const UserProfile: React.FC = () => {
             className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow"
           >
             <div className="flex-grow">
-              <h2 className="text-lg font-semibold">Andrew</h2>
-              
-              {
-                client ? (
-                  <p className="text-gray-500 text-sm">{client?.email}</p>
+              <h2 className="text-lg font-semibold">{client?.name}</h2>
 
-                ):(
-                  <p>Email not found</p>
-                )
-              }
+             
+                <p className="text-gray-500 text-sm">{client?.email}</p>
               
             </div>
             <div>
-              <button className="w-[80px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button  className="w-[80px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Edit
               </button>
             </div>

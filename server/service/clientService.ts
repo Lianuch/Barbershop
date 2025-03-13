@@ -6,7 +6,7 @@ import mailService from "./mailService";
 import ClientDto from "../dto/clientDto";
 import tokenService from "./tokenService";
 class ClientService {
-  async registration(email: string, password: string) {
+  async registration(name: string, email: string, password: string) {
     const candidate = await Client.findOne({ email });
     if (candidate) {
       throw AppError.BadRequest("Client already exists");
@@ -16,6 +16,7 @@ class ClientService {
     const activationLink = uuidv4();
 
     const client = await Client.create({
+      name,
       email,
       password: hashPassword,
       activationLink,
@@ -26,7 +27,6 @@ class ClientService {
       `${process.env.API_URL}/api/clients/activate/${activationLink}`
     );
     
-    console.log("PASSWORD: ", client.password);
 
     const clientDto = new ClientDto(client);
     const tokens = tokenService.generateTokens({ ...clientDto });
@@ -48,7 +48,7 @@ class ClientService {
     await client.save();
   }
 
-  async login(email: string, password: string) {
+  async login( email: string, password: string) {
     const client = await Client.findOne({ email }).select("+password");;    
 
     if (!client) {

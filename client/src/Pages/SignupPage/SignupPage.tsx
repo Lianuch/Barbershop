@@ -1,7 +1,6 @@
 import { IoMdClose } from "react-icons/io";
 import { PasswordInput } from "../../components/PasswordInputButton/PasswordInput";
 import { SignupProps } from "../../interfaces/SignupProps";
-import { useState } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { registerUser } from "../../slices/authThunks/registerClient";
@@ -17,16 +16,16 @@ export const SignupPage: React.FC<SignupProps> = ({
   const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
-  const { loading, error, isAuth } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { loading } = useAppSelector((state) => state.auth);
 
-  const handleSubmit = async (values: { email: string; password: string }) => {
+  const handleSubmit = async (values: { name: string; email: string; password: string }) => {
     await dispatch(registerUser(values));
     navigate("/activation");
   };
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
+      initialValues={{ name: "", email: "", password: "" }}
       validationSchema={ValidationSchema}
       onSubmit={handleSubmit}
     >
@@ -47,6 +46,20 @@ export const SignupPage: React.FC<SignupProps> = ({
               </div>
 
               <div className="flex flex-col space-y-4">
+                {/* Name */}
+                <Field
+                  text="text"
+                  name="name"
+                  className="text-black rounded-md px-2 py-0.5"
+                  placeholder="Name"
+                />
+                  <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="text-red-500 "
+                />
+                {/* Email */}
+
                 <Field
                   type="text"
                   name="email"

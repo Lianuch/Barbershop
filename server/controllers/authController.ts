@@ -10,8 +10,12 @@ class ClientController {
       if (!errors.isEmpty()) {
         return next(new AppError(400, "Validation error", errors.array()));
       }
-      const { email, password } = req.body;
-      const clientData = await clientService.registration(email, password);
+      const { name, email, password } = req.body;
+      const clientData = await clientService.registration(
+        name,
+        email,
+        password
+      );
       res.cookie("refreshToken", clientData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
@@ -24,9 +28,12 @@ class ClientController {
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, password } = req.body;
+      const {  email, password } = req.body;
       const clientData = await clientService.login(email, password);
-      res.cookie('refreshToken', clientData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+      res.cookie("refreshToken", clientData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      });
       return res.json(clientData);
     } catch (e) {
       next(e);
@@ -45,7 +52,6 @@ class ClientController {
   }
   async activate(req: Request, res: Response, next: NextFunction) {
     try {
-      
       const activationLink = req.params.link;
       await clientService.activate(activationLink);
       return res.redirect(process.env.CLIENT_URL);
@@ -63,9 +69,8 @@ class ClientController {
         httpOnly: true,
       });
       return res.json(clientData);
-    }
-    catch(e){
-      next(e)
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -77,7 +82,17 @@ class ClientController {
       next(e);
     }
   }
-
+   async getClient(req: Request, res: Response, next: NextFunction) {
+      try {
+        const client = req.client;
+        if (!client) {
+          throw AppError.BadRequest("Client not found");
+        }
+        return res.json(client);
+      } catch (e) {
+        next(e);
+      }
+    }
 }
 
-export default new ClientController()
+export default new ClientController();
