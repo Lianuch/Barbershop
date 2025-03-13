@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { BarbersPage } from "./Pages/BarbersPage/BarbersPage";
 import { HomePage } from "./Pages/HomePage/HomePage";
@@ -37,13 +38,14 @@ function App() {
           <Route path="/activation" element={<ActivationPage />} />
       {isAuth ? (
         <Route path="/profile" element={ <ProfileLayout /> } >
-          <Route index element={<UserProfile />} />
+          <Route index element={<UserProfile  />} />
        </Route>
       ) : (
         <Route path="profile" element={<Navigate to="/profile" />} />
       )
       }
         </Routes>
+        <ToastContainer />
     </div>
   );
 }

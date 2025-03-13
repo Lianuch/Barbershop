@@ -63,7 +63,7 @@ export const Header = () => {
                   onClick={() => scrollToSection(id)}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="hover:scale-95 transition-transform duration-200"
+                  className="hover:scale-95 transition-transform "
                 >
                   {label}
                 </motion.button>

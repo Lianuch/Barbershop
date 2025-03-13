@@ -3,7 +3,7 @@ import { FaInstagram } from "react-icons/fa";
 import { MdLocationPin } from "react-icons/md";
 import { MdOutlineEventNote } from "react-icons/md";
 import { useEffect, useState } from "react";
-import { delay, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 const footerAnimation = {
   hidden: {

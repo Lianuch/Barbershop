@@ -17,5 +17,6 @@ clientRouter.post('/logout', client.logout)
 clientRouter.get("/activate/:link", client.activate);  
 clientRouter.get('/refresh', client.refresh)
 clientRouter.get("/", authMiddleware, client.getClients); 
+clientRouter.get("/me", authMiddleware, client.getClient); 
 
 export { clientRouter };

@@ -9,7 +9,8 @@ import { loginClient } from "../../slices/authThunks/loginClient";
 
 import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import { ValidationSchema } from "../../schemas";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const LoginPage: React.FC<LoginProps> = ({
   closeModal,
   switchToSignup,
@@ -19,9 +20,20 @@ export const LoginPage: React.FC<LoginProps> = ({
   const dispatch = useAppDispatch();
   const { loading, error, isAuth } = useAppSelector((state) => state.auth);
 
-  const handleSubmit = async (values: { email: string, password: string }) => {
+  const handleSubmit = async (values: { email: string; password: string }) => {
     await dispatch(loginClient(values));
-  }
+    setTimeout(() => {
+      toast.success("You successfully logged in", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        theme: "dark",
+      });
+    }, 1000);
+  };
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -80,7 +92,7 @@ export const LoginPage: React.FC<LoginProps> = ({
                   className="text-red-500 "
                 />
 
-                <button 
+                <button
                   type="submit"
                   disabled={loading || isSubmitting}
                   className={`rounded-md bg-white text-black text-xl ${

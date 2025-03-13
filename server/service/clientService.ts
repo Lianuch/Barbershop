@@ -97,6 +97,7 @@ class ClientService {
     const clients = await Client.find();
     return clients;
   }
+ 
 }
 
 export default new ClientService();

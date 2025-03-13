@@ -77,7 +77,19 @@ class ClientController {
       next(e);
     }
   }
+  async getClient(req: Request, res: Response, next: NextFunction) {
+    try{
+      const client = req.client
+      if(!client){
+        throw AppError.BadRequest("Client not found");
 
+      }
+      return res.json(client)
+    }
+    catch(e){
+      next(e)
+    }
+  }
 }
 
 export default new ClientController();
