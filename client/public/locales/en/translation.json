@@ -18,7 +18,11 @@
   "dontHaveAccount":"Don't have an account?",
   "login":"Login",
   "signup":"Sign up",
-  "createAccount":"Create an account"
+  "createAccount":"Create an account",
 
+  "welcome":"Welcome",
+  "edit":"Edit",
+  "visits":"Your visits"
 
+  
 }

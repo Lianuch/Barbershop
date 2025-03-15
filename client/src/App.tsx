@@ -12,6 +12,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { UserProfile } from "./components/UserProfile/UserProfile";
 import { ProfileLayout } from "./Pages/ProfileLayout/ProfileLayout";
 import { ActivationPage } from "./Pages/ActivationPage/ActivationPage";
+
 function App() {
   const dispatch = useAppDispatch();
   const { isAuth, loading } = useAppSelector((state) => state.auth);
@@ -29,23 +30,25 @@ function App() {
       </div>
     );
   }
-  
+
   return (
-    <div >
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/barbers" element={<BarbersPage />} />
-          <Route path="/activation" element={<ActivationPage />} />
-      {isAuth ? (
-        <Route path="/profile" element={ <ProfileLayout /> } >
-          <Route index element={<UserProfile  />} />
-       </Route>
-      ) : (
-        <Route path="profile" element={<Navigate to="/profile" />} />
-      )
-      }
-        </Routes>
-        <ToastContainer />
+    <div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/barbers" element={<BarbersPage />} />
+        {/* <Route path="/booking" element={<BookingPage />}>
+          <Route index element={<Booking />} />
+        </Route> */}
+        <Route path="/activation" element={<ActivationPage />} />
+        {isAuth ? (
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route index element={<UserProfile />} />
+          </Route>
+        ) : (
+          <Route path="profile" element={<Navigate to="/profile" />} />
+        )}
+      </Routes>
+      <ToastContainer />
     </div>
   );
 }

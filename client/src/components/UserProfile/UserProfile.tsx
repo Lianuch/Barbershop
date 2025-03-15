@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import IClient from "../../interfaces/IClient";
 import ClientService from "../../Services/clientService";
+import { useTranslation } from "react-i18next";
 
 export const UserProfile: React.FC = () => {
   const [date, setDate] = useState(new Date());
-  const navigate = useNavigate();
   const [client, setClient] = useState<IClient | null>(null);
+  const navigate = useNavigate();
+    const { t } = useTranslation();
+  
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -77,7 +80,8 @@ export const UserProfile: React.FC = () => {
             custom={1}
             className="text-3xl mb-4"
           >
-            Welcome
+
+            {t("welcome")}
           </motion.h1>
           <motion.p
             variants={textAnimation}
@@ -118,8 +122,8 @@ export const UserProfile: React.FC = () => {
               
             </div>
             <div>
-              <button  className="w-[80px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Edit
+              <button  className="w-[120px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                {t("edit")}
               </button>
             </div>
           </motion.div>
@@ -130,7 +134,7 @@ export const UserProfile: React.FC = () => {
             custom={5}
             className="text-3xl text-center"
           >
-            Your visits
+            {t("visits")}
           </motion.h1>
           <div className="flex flex-col gap-4">
             <div className="p-4 bg-gray-100 rounded-lg shadow">
