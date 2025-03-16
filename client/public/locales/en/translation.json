@@ -22,7 +22,12 @@
 
   "welcome":"Welcome",
   "edit":"Edit",
-  "visits":"Your visits"
+  "visits":"Your visits",
+  
+  "selectEmployee":"Select an employee",
+  "selectDateTime":"Select date and time",
+  "selectService":"Select a service",
+  "timeForBooking":"Nearest time slot for the appointment"
 
   
 }
