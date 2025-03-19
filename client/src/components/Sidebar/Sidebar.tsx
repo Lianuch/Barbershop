@@ -6,11 +6,15 @@ import { FaChevronRight } from "react-icons/fa";
 import { SidebarProps } from "../../interfaces/SidebarProps";
 import { useState } from "react";
 import { Employee } from "./Employee/Employee";
+import { Services } from "./Servicess/Services";
+import { DateTime } from "./DateTime/DateTime";
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
+  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   const handleItemClick = (item: string) => {
     setSelectedItem(item === selectedItem ? null : item);
@@ -18,7 +22,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const handleBackClick = () => {
     setSelectedItem(null);
   };
-  const timeSlots = ["11:00", "12:00", "13:00", "15:00", "16:00"];
 
   return (
     <div className="relative flex items-center justify-center ">
@@ -98,20 +101,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             </div>
 
             {selectedItem === "eymployee" && (
-           <Employee setSelectedEmployee={setSelectedEmployee} selectedEmployee={selectedEmployee}/>
+              <Employee
+                setSelectedEmployee={setSelectedEmployee}
+                selectedEmployee={selectedEmployee}
+              />
             )}
 
             {selectedItem === "date" && (
-              <div className="mt-5">
-                <h3 className="text-xl">{t("selectDateTime")}</h3>
-                <p>2</p>
-              </div>
+              <DateTime
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+              />
             )}
             {selectedItem === "services" && (
-              <div className="mt-5">
-                <h3 className="text-xl">{t("selectService")}</h3>
-                <p>3</p>
-              </div>
+              <Services
+                setSelectedService={setSelectedService}
+                selectedService={selectedService}
+              />
             )}
           </div>
         )}
