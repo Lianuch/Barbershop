@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import { ServiceProps } from "../../../interfaces/ServiceProps";
 import { SelectButton } from "../SelectButton/SelectButton";
+import { Employee } from "../Employee/Employee";
 
 export const Services = ({
   selectedService,
@@ -51,9 +52,10 @@ export const Services = ({
           before:content-['✔'] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:opacity-0 checked:before:opacity-100"          size={40}
         />
       </div>
-      {selectedService && (
-        <SelectButton text={t("selectEmployee")} onClick={(e) => {e.preventDefault()}} />
-      )}
+      {/* {selectedService && (
+        <SelectButton text={t("selectEmployee")} onClick={(e) => { e.preventDefault();
+        }} />
+      )} */}
     </form>
   );
 };

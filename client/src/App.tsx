@@ -36,9 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/barbers" element={<BarbersPage />} />
-        {/* <Route path="/booking" element={<BookingPage />}>
-          <Route index element={<Booking />} />
-        </Route> */}
+
         <Route path="/activation" element={<ActivationPage />} />
         {isAuth ? (
           <Route path="/profile" element={<ProfileLayout />}>

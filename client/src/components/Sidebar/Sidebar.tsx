@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Employee } from "./Employee/Employee";
 import { Services } from "./Servicess/Services";
 import { DateTime } from "./DateTime/DateTime";
+import { SelectButton } from "./SelectButton/SelectButton";
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
@@ -56,7 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 {
                   icon: <IoIosPeople size={20} />,
                   text: t("selectEmployee"),
-                  id: "eymployee",
+                  id: "employee",
                 },
                 {
                   icon: <MdDateRange size={20} />,
@@ -100,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
               </div>
             </div>
 
-            {selectedItem === "eymployee" && (
+            {selectedItem === "employee" && (
               <Employee
                 setSelectedEmployee={setSelectedEmployee}
                 selectedEmployee={selectedEmployee}
@@ -119,10 +120,30 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 selectedService={selectedService}
               />
             )}
+            {selectedEmployee && selectedTime !== "services" && (
+              <SelectButton
+                text={
+                  selectedItem === "services"
+                    ? t("selectEmployee")
+                    : selectedItem === "date"
+                    ? t("selectService")
+                    : t("selectService")
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (selectedItem === "services") {
+                    setSelectedItem("employee");
+                  } else if (selectedItem === "employee") {
+                    setSelectedItem("date");
+                  } else {
+                    setSelectedItem("services");
+                  }
+                }}
+              />
+            )}
+
           </div>
         )}
-
-        {/* <div className="bg-black h-1"></div> */}
       </div>
     </div>
   );

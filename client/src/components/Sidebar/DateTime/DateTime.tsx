@@ -61,14 +61,14 @@ export const DateTime: React.FC<DateTimeProps> = ({
           </div>
         </div>
       ))}
-      {selectedTime && (
+      {/* {selectedTime && (
         <SelectButton
           text={t("selectService")}
           onClick={(e) => {
             e.preventDefault();
           }}
         />
-      )}
+      )} */}
     </form>
   );
 };

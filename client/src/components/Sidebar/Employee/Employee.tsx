@@ -70,9 +70,9 @@ export const Employee = ({
             </button>
           ))}
         </div>
-        {selectedEmployee && (
+        {/* {selectedEmployee && (
           <SelectButton text={t("selectService")} onClick={(e) => {e.preventDefault()}} />
-        )}
+        )} */}
       </form>
     </div>
   );
