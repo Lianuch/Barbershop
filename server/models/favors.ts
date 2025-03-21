@@ -1,29 +1,27 @@
 import mongoose from "mongoose";
 
 const favorsSchema = new mongoose.Schema({
-  time:{
+  time: {
     type: String,
     required: true,
     minlength: 1,
-    maxlength:7
+    maxlength: 7,
   },
-  price:{
+  price: {
     type: Number,
     required: true,
     minlength: 1,
-    
   },
- 
-  BarberCategoryFavor:[{
-    type: mongoose.Schema.Types.ObjectId,ref : "BarberCategoryFavor"
-  }],
-  visits:[{
-    type: mongoose.Schema.Types.ObjectId,ref : "Visit"
-  }],
-  favorTranslations:[{
-    type: mongoose.Schema.Types.ObjectId,ref : "FavorTranslations"
-  }]
+
+  translations: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "FavorTranslation" },
+  ],
+
+  visits: [{ type: mongoose.Schema.Types.ObjectId, ref: "Visit" }],
+
+  BarberCategoryFavor: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "BarberCategoryFavor" },
+  ],
 });
 
-const Favor = mongoose.model("Favor", favorsSchema);
-export { Favor };
+export const Favor = mongoose.model("Favor", favorsSchema);

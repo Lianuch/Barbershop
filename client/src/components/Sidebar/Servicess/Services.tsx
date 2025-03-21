@@ -3,10 +3,8 @@ import { useTranslation } from "react-i18next";
 import { CiSearch } from "react-icons/ci";
 import { ServiceProps } from "../../../interfaces/ServiceProps";
 import { SelectButton } from "../SelectButton/SelectButton";
-import { Employee } from "../Employee/Employee";
 
 export const Services = ({
-  selectedService,
   setSelectedService,
 }: ServiceProps) => {
   const { t } = useTranslation();

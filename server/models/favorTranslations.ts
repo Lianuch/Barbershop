@@ -9,17 +9,11 @@ const favorTranslationsSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: 1,
+    minlength: 2,
   },
+  favor: { type: mongoose.Schema.Types.ObjectId, ref: "Favor", required: true },
 
-  favor: {
-    type: mongoose.Schema.Types.ObjectId,  
-    ref: "Favor",
-  },
+
 });
 
-const FavorTranslations = mongoose.model(
-  "FavorTranslations",
-  favorTranslationsSchema
-);
-export { FavorTranslations };
+export const FavorTranslations = mongoose.model("FavorTranslation", favorTranslationsSchema);

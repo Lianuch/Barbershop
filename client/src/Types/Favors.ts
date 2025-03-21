@@ -2,7 +2,7 @@ export type Favors={
     _id: string,
     time: string,
     price: number,
-    favorTranslations:{
+    translations:{
         _id: string,
         language: string,
         name:string,   

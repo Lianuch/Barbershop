@@ -5,16 +5,10 @@ import Barber from "../models/barbers";
 import Visit from "../models/visit";
 
 const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
-  const { language } = req.query;
 
   try {
     const barbers = await Barber.find()
       .populate("barberCategory", "categoryName")
-      // .populate({
-      //   path: "translation",
-      //   match: { language: language ?? "en" },
-      //   select: "language name surname barber",
-      // })
       .populate(
         "translation",
       "language name surname barber",
@@ -22,7 +16,7 @@ const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
       .populate("visits", "date comment client")
       .select("-__v")
 
-
+console.log(barbers)
     if (!barbers || barbers.length === 0) {
       return res.status(404).json({ error: "Barbers not found" });
     }

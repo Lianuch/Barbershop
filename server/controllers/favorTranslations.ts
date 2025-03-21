@@ -9,11 +9,15 @@ const getFavorTranslations = async (
   next: NextFunction
 ) => {
   try {
-    const favorTranslations = await Favor.find().populate("favor");
-    if (!favorTranslations.length) {
+    const translations = await FavorTranslations.find()
+      .populate("favor", "time price")
+      .select("-__v");
+
+    if (!translations.length || translations.length === 0) {
       return res.status(404).json({ error: "FavorTranslations not found" });
     }
-    res.status(200).json(favorTranslations);
+
+    res.status(200).json(translations);
   } catch (e) {
     next(e);
   }
@@ -28,7 +32,7 @@ const addFavorTranslations = async (
     const { name, language, favor } = req.body;
     const favorExist = await Favor.findById(favor);
     if (!favorExist) {
-      return res.status(404).json({ error: "Favor exists" });
+      return res.status(404).json({ error: "Favor doesnt exist" });
     }
 
     const favorTranslation = new FavorTranslations({
@@ -40,7 +44,7 @@ const addFavorTranslations = async (
     await favorTranslation.save();
 
     await Favor.findByIdAndUpdate(favor, {
-      $push: { favorTranslations: favorTranslation._id },
+      $push: { translation: favorTranslation._id },
     });
     res.status(200).json(favorTranslation);
   } catch (e) {
