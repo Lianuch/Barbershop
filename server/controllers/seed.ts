@@ -34,8 +34,20 @@ const seedData = async (req: Request, res: Response, next: NextFunction) => {
 
     // ✂️ Create Favors
     const favors = await Favor.create([
-      { time: "60min", price: 400, translations: [], BarberCategoryFavor: [], visits: [] },
-      { time: "120min", price: 700, translations: [], BarberCategoryFavor: [], visits: [] },
+      {
+        time: "60min",
+        price: 400,
+        translations: [],
+        BarberCategoryFavor: [],
+        visits: [],
+      },
+      {
+        time: "120min",
+        price: 700,
+        translations: [],
+        BarberCategoryFavor: [],
+        visits: [],
+      },
     ]);
 
     // 🌎 Create Favor Translations
@@ -50,15 +62,21 @@ const seedData = async (req: Request, res: Response, next: NextFunction) => {
     await Promise.all([
       Favor.updateOne(
         { _id: favors[0]._id },
-        { $push: { translations: [favorTranslations[0]._id, favorTranslations[1]._id] } }
+        {
+          $push: {
+            translations: [favorTranslations[0]._id, favorTranslations[1]._id],
+          },
+        }
       ),
       Favor.updateOne(
         { _id: favors[1]._id },
-        { $push: { translations: [favorTranslations[2]._id, favorTranslations[3]._id] } }
+        {
+          $push: {
+            translations: [favorTranslations[2]._id, favorTranslations[3]._id],
+          },
+        }
       ),
     ]);
-    
-    
 
     // 🏆 Create Barber Categories
     const barberCategories = await BarberCategory.insertMany([
@@ -68,7 +86,7 @@ const seedData = async (req: Request, res: Response, next: NextFunction) => {
     ]);
 
     // 🔗 Create BarberCategoryFavor
-    const categoryFavors = await barberCategoryFavor.insertMany([
+    await barberCategoryFavor.insertMany([
       { barberCategory: barberCategories[0]._id, favor: favors[0]._id },
       { barberCategory: barberCategories[1]._id, favor: favors[1]._id },
     ]);
@@ -81,14 +99,28 @@ const seedData = async (req: Request, res: Response, next: NextFunction) => {
         barberCategory: barberCategories[0]._id,
         translation: [],
         visits: [],
+        coef: 1.0,
       },
       {
-        image: "https://res.cloudinary.com/dwhkxgtpg/image/upload/v1738778967/tkachuk_lg8m1e.jpg",
-        barberCategory: barberCategories[0]._id,
+        image:
+          "https://res.cloudinary.com/dwhkxgtpg/image/upload/v1738778967/tkachuk_lg8m1e.jpg",
+        barberCategory: barberCategories[1]._id,
         translation: [],
         visits: [],
+        coef: 1.125,
+      },
+      {
+        image:"https://res.cloudinary.com/dwhkxgtpg/image/upload/v1738778971/kojan-240x240_kqlmuy.jpg"
+        ,barberCategory: barberCategories[2]._id,
+        translation: [],
+        visits: [],
+        coef: 1.25,
       }
     ]);
+
+    const foundB = await Barber.find();
+    console.log(foundB);
+    
 
     // 📝 Create Barber Translations
     const barberTranslations = await BarberTranslation.insertMany([
@@ -115,6 +147,18 @@ const seedData = async (req: Request, res: Response, next: NextFunction) => {
         name: "Назар",
         surname: "Озорович",
         barber: barbers[1]._id,
+      },
+      {
+        language: "en",
+        name: "Serhii",
+        surname: "Bondarenko",
+        barber: barbers[2]._id,
+      },
+      {
+        language: "ua",
+        name: "Сергій",
+        surname: "Бондаренко",
+        barber: barbers[2]._id,
       }
     ]);
 
@@ -122,13 +166,30 @@ const seedData = async (req: Request, res: Response, next: NextFunction) => {
     await Promise.all([
       Barber.updateOne(
         { _id: barbers[0]._id },
-        { $set: { translation: barberTranslations.slice(0, 2).map((t) => t._id) } }
+        {
+          $set: {
+            translation: barberTranslations.slice(0, 2).map((t) => t._id),
+          },
+        }
       ),
       Barber.updateOne(
         { _id: barbers[1]._id },
-        { $set: { translation: barberTranslations.slice(2, 4).map((t) => t._id) } }
-      )
+        {
+          $set: {
+            translation: barberTranslations.slice(2, 4).map((t) => t._id),
+          },
+        }
+      ),
+      Barber.updateOne(
+        { _id: barbers[2]._id }, 
+        {
+          $set: {
+            translation: barberTranslations.slice(4, 6).map((t) => t._id),
+          },
+        }
+      ),
     ]);
+    
 
     // ⏳ Create Visits
     const [visit] = await Visit.insertMany([
@@ -143,12 +204,23 @@ const seedData = async (req: Request, res: Response, next: NextFunction) => {
 
     // Update Barber and Client with Visit
     await Promise.all([
-      Barber.updateOne({ _id: barbers[0]._id }, { $push: { visits: visit._id } }),
+      Barber.updateOne(
+        { _id: barbers[0]._id },
+        { $push: { visits: visit[0]._id } }
+      ),
+      Barber.updateOne(
+        { _id: barbers[1]._id },
+        { $push: { visits: visit[1]._id } }
+      ),
       Client.updateOne({ _id: client._id }, { $push: { visits: visit._id } }),
-      Favor.updateOne({ _id: favors[0]._id }, { $set: { visits: [visit._id] } }),
-      Favor.updateOne({ _id: favors[1]._id }, { $set: { visits: [visit._id] } }),
-      Favor.updateOne({ _id: favors[2]._id }, { $set: { visits: [visit._id] } }),
-      Favor.updateOne({ _id: favors[3]._id }, { $set: { visits: [visit._id] } })
+      Favor.updateOne(
+        { _id: favors[0]._id },
+        { $set: { visits: [visit._id] } }
+      ),
+      Favor.updateOne(
+        { _id: favors[1]._id },
+        { $set: { visits: [visit._id] } }
+      ),
     ]);
 
     res.status(200).json({ message: "✅ Database seeded successfully!" });

@@ -1,12 +1,11 @@
 import { IoMenu } from "react-icons/io5";
 import { NavLink, useNavigate } from "react-router-dom";
-import { MNavLinks, NavLinks } from "../NavLinks/NavLinks";
+import { NavLinks } from "../NavLinks/NavLinks";
 import { useState } from "react";
 import { IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
 import { Language } from "../Language/Language";
 import { useTranslation } from "react-i18next";
 import { AuthForm } from "../AuthForm/AuthForm";
-import { Exit } from "../Exit/Exit";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { motion } from "framer-motion";
 import { Sidebar } from "../Sidebar/Sidebar";
@@ -18,11 +17,15 @@ export const scrollToSection = (id: string) => {
   }
 };
 export const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [IsExitVisible, setIsExitVisible] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const openSidebar = () => {
+    setIsMenuOpen(false);
+    setIsSidebarOpen(true);
   };
 
   const { t } = useTranslation();
@@ -52,8 +55,10 @@ export const Header = () => {
 
             <div className="text-xl flex flex-row w-full justify-between ">
               <div className="hidden md:flex font-bold space-x-4">
+                <NavLink to="/" className="pt-2">
+                  {t("home")}
+                </NavLink>
                 {[
-                  { id: "home", label: t("home") },
                   { id: "barbers", label: t("barbers") },
                   { id: "about", label: t("about") },
                   { id: "contacts", label: t("contacts") },
@@ -72,7 +77,7 @@ export const Header = () => {
 
               <div className="hidden md:block">
                 <div className="flex ml-10 items-baseline space-x-2">
-                  <button onClick={() => setIsOpen(true)}>
+                  <button className="p-2 border" onClick={openSidebar}>
                     {t("booking")}
                   </button>
                   <Language />
@@ -80,25 +85,29 @@ export const Header = () => {
                   <div onClick={handleProfile}>
                     <AuthForm />
                   </div>
-
-                  {/* {isAuth && <Exit setIsExitVisible={setIsExitVisible} />} */}
                 </div>
               </div>
             </div>
-            <div className="md:hidden ">
+            <div className="md:hidden">
               <button type="button" onClick={toggleMenu}>
-                {isOpen ? <IoMdClose size={25} /> : <IoMenu size={25} />}
+                {isMenuOpen ? <IoMdClose size={25} /> : <IoMenu size={25} />}
               </button>
             </div>
           </div>
         </div>
-        {isOpen && (
+        {isMenuOpen && (
           <div className="flex flex-col justify-center items-center gap-y-2 md:hidden ps-4 sm:px-6 pb-10">
-            <MNavLinks />
+            <NavLink to="/" className="pt-2">
+              {t("home")}
+            </NavLink>
+            <NavLinks openSidebar={openSidebar} />
+            <div onClick={handleProfile}>
+              <AuthForm />
+            </div>
           </div>
         )}
       </nav>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
     </>
   );
 };

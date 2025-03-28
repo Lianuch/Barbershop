@@ -19,7 +19,7 @@ export const BarberList: React.FC = () => {
   }, [dispatch, i18n.language]);
 
   return (
-    <div className="my-8">
+    <div id="barbers" className="my-8">
       <div className=" max-w-7xl mx-auto">
         <h1 className="text-5xl py-6 text-center mb-8">{t("meetBarbers")}</h1>
 

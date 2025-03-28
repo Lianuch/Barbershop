@@ -11,4 +11,5 @@ export type Barbers = {
     name: string;
     surname: string;
   }[];
+  coef:number;
 };

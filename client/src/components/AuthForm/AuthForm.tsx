@@ -4,7 +4,7 @@ import { SignupPage } from "../../Pages/SignupPage/SignupPage";
 import { LoginPage } from "../../Pages/LoginPage/LoginPage";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { UserProfile } from "../UserProfile/UserProfile";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export const AuthForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

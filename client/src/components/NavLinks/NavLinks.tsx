@@ -1,17 +1,22 @@
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
 import { Language } from "../Language/Language";
-import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { scrollToSection } from "../Header/Header";
 
-export const NavLinks = forwardRef((_props, ref) => {
+interface NavProps{
+  openSidebar:any
+}
+export const NavLinks:React.FC<NavProps>= ({openSidebar}) => {
+
   const { t } = useTranslation();
+
+  const onButton=(id:string)=>{
+    id === "booking" ? openSidebar() : scrollToSection(id)
+  }
 
   return (
     <>
       {[
-        { id: "home", label: t("home") },
         { id: "barbers", label: t("barbers") },
         { id: "about", label: t("about") },
         { id: "contacts", label: t("contacts") },
@@ -19,8 +24,10 @@ export const NavLinks = forwardRef((_props, ref) => {
       ].map(({ id, label }) => (
         <motion.button
           key={id}
-          onClick={() => scrollToSection(id)}
-          whileHover={{ scale: 1.1 }}
+          onClick={(event) => {
+            event.preventDefault(); 
+            onButton(id);
+          }}          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="hover:scale-95 transition-transform duration-200"
         >
@@ -31,6 +38,4 @@ export const NavLinks = forwardRef((_props, ref) => {
       <Language />
     </>
   );
-});
-
-export const MNavLinks = motion(NavLinks);
+};

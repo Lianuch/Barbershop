@@ -6,7 +6,7 @@ export const Barber: React.FC<BarberProps> = ({ barber }) => {
   const barberTranslation = barber.translation.find((t) => t.language === currentLanguage);
 
   return (
-    <div className="flex flex-col items-center rounded-lg p-4">
+    <div  className="flex flex-col items-center rounded-lg p-4">
       <img style={{borderRadius: "10%"}} src={barber.image} className="rounded-md h-[300px] w-[400px]" alt=' Barber image' />
       <h1 className="text-2xl font-bold my-2">
         {barberTranslation?.name} {barberTranslation?.surname}

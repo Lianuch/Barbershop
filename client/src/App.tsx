@@ -2,7 +2,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import { BarbersPage } from "./Pages/BarbersPage/BarbersPage";
 import { HomePage } from "./Pages/HomePage/HomePage";
 import { useEffect } from "react";
 import { useAppDispatch } from "./hooks/useAppDispatch";
@@ -35,7 +34,6 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/barbers" element={<BarbersPage />} />
 
         <Route path="/activation" element={<ActivationPage />} />
         {isAuth ? (

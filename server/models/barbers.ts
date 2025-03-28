@@ -5,7 +5,9 @@ const barbersSchema = new mongoose.Schema({
   barberCategory: { type: mongoose.Schema.Types.ObjectId, ref: "BarberCategory" },
   translation: [{ type: mongoose.Schema.Types.ObjectId, ref: "BarberTranslation" }],
   visits: [{ type: mongoose.Schema.Types.ObjectId, ref: "Visit" }],
+  coef: { type: Number, default: 1.0 },
 });
+
 
 const Barber = mongoose.model("Barber", barbersSchema);
 export default Barber;

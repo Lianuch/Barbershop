@@ -4,7 +4,6 @@ import { Contacts } from "../../components/Contacts/Contacts"
 import { FavorsList } from "../../components/FavorList/FavorsList"
 import Footer from "../../components/Footer/Footer"
 import { Header } from "../../components/Header/Header"
-import { useLocation } from "react-router-dom";
 
 export const HomePage = () => {
 

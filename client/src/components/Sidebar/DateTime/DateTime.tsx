@@ -31,6 +31,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
     Day: timeSlots.filter((slot) => slot.hour >= 12 && slot.hour <= 17),
     Evening: timeSlots.filter((slot) => slot.hour > 17 && slot.hour <= 20),
   };
+  console.log("selectedTime", selectedTime);
 
   return (
     <form className="mt-5">
@@ -61,14 +62,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
           </div>
         </div>
       ))}
-      {/* {selectedTime && (
-        <SelectButton
-          text={t("selectService")}
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-        />
-      )} */}
+    
     </form>
   );
 };

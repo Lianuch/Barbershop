@@ -9,14 +9,11 @@ const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const barbers = await Barber.find()
       .populate("barberCategory", "categoryName")
-      .populate(
-        "translation",
-      "language name surname barber",
-      )
+      .populate("translation", "language name surname barber")
       .populate("visits", "date comment client")
+      .select("image barberCategory coef translation visits")
       .select("-__v")
 
-console.log(barbers)
     if (!barbers || barbers.length === 0) {
       return res.status(404).json({ error: "Barbers not found" });
     }
@@ -29,8 +26,8 @@ console.log(barbers)
 
 const addBarber = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { image, barberCategory, translation, visits } = req.body;
-    const barber = new Barber({ image, barberCategory, translation, visits });
+    const { image, barberCategory, translation, visits, coef } = req.body;
+    const barber = new Barber({ image, barberCategory, translation, visits, coef: coef ?? 1.0 });
 
     if (!barber) {
       return res.status(404).json({ error: "Missing fields" });
@@ -69,7 +66,7 @@ const updateBarber = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { image, barberCategory, translation, visits } = req.body;
+  const { image, barberCategory, translation, visits, coef } = req.body;
   try {
     const barber = await Barber.findById(id);
     if (!barber) {
@@ -88,7 +85,7 @@ const updateBarber = async (
 
     const updatedBarber = await Barber.findByIdAndUpdate(
       id,
-      { image: updatedImage, barberCategory, translation, visits },
+      { image: updatedImage, barberCategory, translation, visits, coef: coef ?? 1.0 },
       { new: true }
     );
 

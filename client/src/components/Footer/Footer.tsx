@@ -28,7 +28,7 @@ const Footer = () => {
   return (
     <motion.div
       initial="hidden"
-      whileInView={"visible"}
+      whileInView={"visible" }
       viewport={{ amount: 0.3, once: true }}
       className=" bg-black text-white"
     >
