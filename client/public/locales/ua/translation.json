@@ -27,7 +27,10 @@
   "selectEmployee":"Вибрати співробітника",
   "selectDateTime":"Вибір дати та часу",
   "selectService":"Вибір послуг",
-  "timeForBooking":"Найближчий час для запису"
+  "timeForBooking":"Найближчий час для запису",
+
+  "makeAppointment":"Готово"
+
 
 
 }

@@ -5,7 +5,7 @@ import { ServiceProps } from "../../../interfaces/ServiceProps";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import BeatLoader from "react-spinners/BeatLoader";
 
-export const Services = ({ setSelectedService }: ServiceProps) => {
+export const Services = ({selectedService, setSelectedService }: ServiceProps) => {
   const { t } = useTranslation();
   const [isChecked, setIsChecked] = useState<{ [key: string]: boolean }>({});
 
@@ -18,13 +18,17 @@ export const Services = ({ setSelectedService }: ServiceProps) => {
 
   const handleChange = (barberId: string, favorId: string) => {
     const key = `${barberId}_${favorId}`;
-    setIsChecked((prev) => {
-      const newChecked = { ...prev, [key]: !prev[key] };
-      const selected = newChecked[key] ? favorId : null;
-      setSelectedService(selected);
-      return newChecked;
-    });
+  
+    setIsChecked((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  
+const newService = selectedService === favorId ? null : favorId;
+  setSelectedService(newService);
+    console.log("Selected Service:", newService); // Log the correct value
   };
+  
 
   if (loading) {
     return (
@@ -74,7 +78,7 @@ export const Services = ({ setSelectedService }: ServiceProps) => {
                           </h1>
                           <p className="text-sm text-gray-600">{favor.time}</p>
                           <h1 className="text-md font mt-1">
-                            {(favor.price * (barber.coef || 1))} ₴
+                            {(favor.price * (barber.coef))} ₴
                           </h1>
                         </div>
                         <input

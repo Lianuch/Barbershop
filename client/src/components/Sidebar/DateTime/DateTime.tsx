@@ -1,13 +1,16 @@
 import { useTranslation } from "react-i18next";
-import { SelectButton } from "../SelectButton/SelectButton";
 import { DateTimeProps } from "../../../interfaces/DateTimeProps";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import  { Dayjs } from "dayjs";
+import { useState } from "react";
 
 export const DateTime: React.FC<DateTimeProps> = ({
   selectedTime,
   setSelectedTime,
+  selectedDate,
+  setSelectedDate,
 }) => {
   const { t } = useTranslation();
 
@@ -25,20 +28,26 @@ export const DateTime: React.FC<DateTimeProps> = ({
     { label: "19:00", hour: 19 },
     { label: "20:00", hour: 20 },
   ];
+const handleDateChange = (date: Dayjs | null) => {
+  setSelectedDate(date);
+  console.log("Selected Date:", date ? date.format("YYYY-MM-DD") : "None", "Selected Time:", selectedTime);
 
+}
   const groupedSlots = {
     Morning: timeSlots.filter((slot) => slot.hour >= 9 && slot.hour < 12),
     Day: timeSlots.filter((slot) => slot.hour >= 12 && slot.hour <= 17),
     Evening: timeSlots.filter((slot) => slot.hour > 17 && slot.hour <= 20),
   };
-  console.log("selectedTime", selectedTime);
 
   return (
     <form className="mt-5">
       <div className="overflow-hidden px-4 flex justify-center">
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateCalendar sx={{ width: "100%" }} />
+          <DateCalendar 
+          value={selectedDate}
+          onChange={handleDateChange}
+          sx={{ width: "100%" }} />
         </LocalizationProvider>
       </div>
       {Object.entries(groupedSlots).map(([period, slots]) => (

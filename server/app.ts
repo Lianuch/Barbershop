@@ -13,14 +13,15 @@ import seedRouter from "./routes/seed";
 import { visitRouter } from "./routes/visit";
 import { favorTranslationsRouter } from "./routes/favorTranslations";
 import { errorMiddleware } from "./middleware/errorMiddleware";
+import { tempRouter } from "./routes/tempRouter";
 
 const app = express();
 app.use(express.json({ limit: "500kb" }));
 app.use(cookieParser());
 app.use(
   cors({
-    credentials: true,
     origin: process.env.CLIENT_URL || "http://localhost:5173" ,
+    credentials: true,
   })
 );
 
@@ -31,6 +32,7 @@ app.use("/api/favors", favorRouter);
 app.use("/api/favorTranslations", favorTranslationsRouter);  
 app.use("/api/visits", visitRouter);  
 app.use("/api/seed", seedRouter); 
+app.use("/temp", tempRouter); 
 
 app.use("/api/clients", clientRouter); 
 app.use(errorMiddleware);

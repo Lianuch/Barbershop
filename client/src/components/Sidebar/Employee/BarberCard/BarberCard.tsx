@@ -2,17 +2,18 @@ import { useEffect } from "react";
 import { useAppDispatch } from "../../../../hooks/useAppDispatch";
 import { useAppSelector } from "../../../../hooks/useAppSelector";
 import { useLanguage } from "../../../../hooks/useLanguage";
-import { BarberProps } from "../../../../interfaces/BarberProps";
 import { useTranslation } from "react-i18next";
 import { fetchBarbers } from "../../../../slices/barbersSlice";
 import BeatLoader from "react-spinners/BeatLoader";
+import { BarberCardsProps } from "../../../../interfaces/BarberCardsProps";
+import { BarberCardProps } from "../../../../interfaces/BarberCardProps";
 
-export const BarberCards: React.FC = () => {
+
+export const BarberCards: React.FC<BarberCardsProps> = ({ onSelect, selectedEmployee}) => {
   const dispatch = useAppDispatch();
   const {
     list: barbers,
     loading,
-    error,
   } = useAppSelector((state) => state.barbers);
   const { t, i18n } = useTranslation();
 
@@ -23,7 +24,7 @@ export const BarberCards: React.FC = () => {
   return (
     <div className="flex flex-col  gap-2">
       {barbers.map((barber) => (
-        <BarberCard key={barber._id} barber={barber} />
+        <BarberCard key={barber._id} barber={barber} onSelect={onSelect} isSelected={selectedEmployee === barber._id} />
       ))}
 
       {loading && (
@@ -35,7 +36,7 @@ export const BarberCards: React.FC = () => {
   );
 };
 
-export const BarberCard: React.FC<BarberProps> = ({ barber }) => {
+export const BarberCard: React.FC<BarberCardProps> = ({ barber, onSelect, isSelected }) => {
   const { currentLanguage } = useLanguage();
 
   const barberTranslation = barber.translation.find(
@@ -43,7 +44,11 @@ export const BarberCard: React.FC<BarberProps> = ({ barber }) => {
   );
 
   return (
-    <div className="bg-gray-100 rounded-lg">
+    <div
+      className={`bg-gray-100 rounded-lg cursor-pointer ${
+        isSelected ? "border-2 border-blue-300" : ""
+      }`}
+    >
       <div className="flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
           <img
@@ -65,6 +70,9 @@ export const BarberCard: React.FC<BarberProps> = ({ barber }) => {
           type="radio"
           className="w-6 h-6 border-2 border-gray-400 rounded-full"
           name="employee"
+          checked={isSelected}
+          value={barber._id} // This ensures that the value passed is the barber's ID
+          onChange={() => onSelect(barber._id)} // Only use onChange here to update the state
         />
       </div>
     </div>

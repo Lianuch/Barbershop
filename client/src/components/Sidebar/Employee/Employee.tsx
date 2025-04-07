@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { EmployeeProps } from "../../../interfaces/EmployeeProps";
 import { BarberCards } from "./BarberCard/BarberCard";
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import BeatLoader from "react-spinners/BeatLoader";
 
 export const Employee = ({
@@ -17,8 +17,17 @@ export const Employee = ({
   ];
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  
+  const handleEmployeeSection = (barberId: string)=>{
+    console.log("barberId",barberId);
+    setSelectedEmployee(barberId);
+  }
+useEffect(()=>{
 
- 
+  console.log("Updated selectedEmployee in Employee:", selectedEmployee);
+
+},[selectedEmployee])
+
   return (
     <div>
       <form
@@ -49,8 +58,7 @@ export const Employee = ({
         )}
         <h3 className="text-2xl mb-4">{t("selectEmployee")}</h3>
 
-        <BarberCards />
-    
+        <BarberCards onSelect={handleEmployeeSection} selectedEmployee={selectedEmployee} />
       </form>
     </div>
   );

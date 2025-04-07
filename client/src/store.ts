@@ -3,13 +3,15 @@ import barbersReducer from "./slices/barbersSlice";
 import languageReducer from "./slices/languageSlice"
 import favorsReducer from "./slices/favorsSlice"
 import authReducer from "./slices/authSlice"
-
+import appointmentReducer from "./slices/AppointmentSlice"
 export const store = configureStore({
   reducer: {
     barbers: barbersReducer,
     language: languageReducer,
     favors: favorsReducer,
-    auth:authReducer
+    auth:authReducer,
+    appointment:appointmentReducer
+
   },
 });
 

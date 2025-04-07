@@ -2,29 +2,40 @@ import tokenService from "../service/tokenService";
 import AppError from "../utils/appError";
 import { Request, Response, NextFunction } from "express";
 
+interface AuthRequest extends Request {
+
+  client?:{
+    id: string;
+    name: string;
+    email: string;
+    isActivated: boolean;
+  };
+}
 export const authMiddleware = async (
-  req: Request,
+  req: Request & AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const authorizationHeader = req.headers.authorization;
-    if (!authorizationHeader) {
-      return next(AppError.UnauthorizedError());
-    }
-
-    const accessToken = authorizationHeader.split(" ")[1];
-    if (!accessToken) {
-      return next(AppError.UnauthorizedError());
-    }
-
-    const clientData = tokenService.validateAccessToken(accessToken);
-    if (!clientData) {
-      return next(AppError.UnauthorizedError());
-    }
-    req.client = clientData;
-    next();
+    try {
+      const authorizationHeader = req.headers.authorization;
+      if (!authorizationHeader) {
+        return next(AppError.UnauthorizedError());
+      }
+  
+      const accessToken = authorizationHeader.split(" ")[1];
+      if (!accessToken) {
+        return next(AppError.UnauthorizedError());
+      }
+  
+      const clientData = tokenService.validateAccessToken(accessToken);
+      if (!clientData) {
+        return next(AppError.UnauthorizedError());
+      }
+  
+      console.log("✅ Token validated for user:", clientData);
+      req.client = clientData; 
+      next();
   } catch (e) {
     return next(AppError.UnauthorizedError());
   }
-};
+}

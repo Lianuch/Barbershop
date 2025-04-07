@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const visitSchema = new mongoose.Schema({
   date: { type: Date, required: true },
-  comment: { type: String, required: true },
+  comment: { type: String, required: false },
   barber: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Barber",

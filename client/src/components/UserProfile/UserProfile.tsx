@@ -10,8 +10,7 @@ export const UserProfile: React.FC = () => {
   const [date, setDate] = useState(new Date());
   const [client, setClient] = useState<IClient | null>(null);
   const navigate = useNavigate();
-    const { t } = useTranslation();
-  
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -41,7 +40,6 @@ export const UserProfile: React.FC = () => {
     }, 10000);
     return () => clearInterval(interval);
   }, [navigate]);
-
 
   const cardAnimation = {
     hidden: {
@@ -80,7 +78,6 @@ export const UserProfile: React.FC = () => {
             custom={1}
             className="text-3xl mb-4"
           >
-
             {t("welcome")}
           </motion.h1>
           <motion.p
@@ -117,12 +114,10 @@ export const UserProfile: React.FC = () => {
             <div className="flex-grow">
               <h2 className="text-lg font-semibold">{client?.name}</h2>
 
-             
-                <p className="text-gray-500 text-sm">{client?.email}</p>
-              
+              <p className="text-gray-500 text-sm">{client?.email}</p>
             </div>
             <div>
-              <button  className="w-[120px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button className="w-[120px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 {t("edit")}
               </button>
             </div>
@@ -143,18 +138,7 @@ export const UserProfile: React.FC = () => {
                 different data types.
               </p>
             </div>
-            <div className="p-4 bg-gray-100 rounded-lg shadow">
-              <p>
-                When those characteristics are undesirable, use typed arrays
-                instead.
-              </p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg shadow">
-              <p>
-                When those characteristics are undesirable, use typed arrays
-                instead.
-              </p>
-            </div>
+       
           </div>
         </div>
         <div className="flex justify-end mt-4" onClick={() => navigate("/")}>

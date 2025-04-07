@@ -3,7 +3,7 @@
  "barbers":"Barbers",
  "about":"About",
  "contacts":"Contacts",
- "booking":"Make an appoinment",
+ "booking":"Online appoinment",
  "menu":"Menu",
 
  "meetBarbers":"Meet the Masters",
@@ -27,7 +27,8 @@
   "selectEmployee":"Choose a specialist",
   "selectDateTime":"Select date and time",
   "selectService":"Select a service",
-  "timeForBooking":"Nearest time slot for the appointment"
+  "timeForBooking":"Nearest time slot for the appointment",
 
+  "makeAppointment":"Done"
   
 }

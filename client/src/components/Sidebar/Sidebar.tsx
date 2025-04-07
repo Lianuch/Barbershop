@@ -4,11 +4,16 @@ import { MdDateRange } from "react-icons/md";
 import { FaList } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
 import { SidebarProps } from "../../interfaces/SidebarProps";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Employee } from "./Employee/Employee";
 import { Services } from "./Servicess/Services";
 import { DateTime } from "./DateTime/DateTime";
 import { SelectButton } from "./SelectButton/SelectButton";
+import { Dayjs } from "dayjs";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { bookAppointment } from "../../Services/visitService";
+import IClient from "../../interfaces/IClient";
+import { useFetchClient } from "../../hooks/useFetchClient";
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
@@ -16,22 +21,69 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
+  const [isFormComplete, setIsFormComplete] = useState(false);
+  useEffect(() => {
+    if (selectedEmployee && selectedDate && selectedTime && selectedService) {
+      setIsFormComplete(true);
+      console.log("Selected Employee:", selectedEmployee);
+      console.log("Selected Date:", selectedDate);
+      console.log("Selected Time:", selectedTime);
+      console.log("Selected Service:", selectedService);
+    } else {
+      setIsFormComplete(false);
+    }
+ 
+  }, [selectedEmployee, selectedDate, selectedTime, selectedService]);
+
+  const dispatch = useAppDispatch();
 
   const handleItemClick = (item: string) => {
     setSelectedItem(item === selectedItem ? null : item);
-
   };
-function test(){
-  console.log(selectedEmployee, selectedTime, selectedService);
-}
+
   const handleBackClick = () => {
     setSelectedItem(null);
+  };
+  const client = useFetchClient(); 
+  // console.log(client);
+  
+  // console.log("date:",date,"time:", time,"barberid", barberId,"favorid", favorId,"comment:", comment,"clientid:", clientId);
+
+
+  const handleBookAppointment = () => {
+    console.log("Selected Employee:", selectedEmployee);
+    // console.log("Selected Date:", selectedDate);
+    // console.log("Selected Time:", selectedTime);
+    // console.log("Selected Service:", selectedService);
+
+    if (
+      !selectedEmployee ||
+      !selectedDate ||
+      !selectedTime ||
+      !selectedService ||
+      !client 
+    ) {
+      console.log("No selected appointment data");
+      return;
+    }
+    
+    const appointmentData = {
+      clientId: client.id,
+      barberId: selectedEmployee,
+      date: new Date(selectedDate.toISOString()),
+      time: selectedTime,
+      comment: "",
+      favorId: selectedService,
+    };
+
+    console.log("Appointment Data:", appointmentData);
+    dispatch(bookAppointment(appointmentData));
   };
 
   return (
     <div className="relative flex items-center justify-center">
-      {/* Background Overlay */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
@@ -39,13 +91,11 @@ function test(){
         ></div>
       )}
 
-      {/* Sidebar */}
       <div
         className={`fixed top-0 right-0 h-full w-3/4 sm:w-1/2 md:w-1/3 lg:w-1/4 rounded-l-md bg-slate-300 shadow-lg p-5 transform transition-transform duration-300 z-50 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } overflow-y-auto max-h-screen`}
       >
-        {/* Close Button */}
         <div className="flex justify-end my-4">
           <button
             className="bg-gray-100 shadow-lg p-2 rounded-full hover:scale-110 hover:text-red-500"
@@ -55,7 +105,6 @@ function test(){
           </button>
         </div>
 
-        {/* Main Content */}
         {selectedItem === null ? (
           <>
             <div className="flex flex-col items-start">
@@ -64,7 +113,7 @@ function test(){
             </div>
 
             <ul className="mt-5 space-y-3">
-              {[ 
+              {[
                 {
                   icon: <IoIosPeople size={20} />,
                   text: t("selectEmployee"),
@@ -97,7 +146,6 @@ function test(){
           </>
         ) : (
           <div className="mt-5">
-            {/* Back Button */}
             <div className="flex gap-3 items-center">
               <button
                 className="bg-gray-100 shadow-lg px-2 rounded-md hover:scale-110 hover:text-red-500 flex-grow-0"
@@ -107,11 +155,12 @@ function test(){
               </button>
               <div className="flex flex-col items-start">
                 <h2 className="text-2xl">{t("aboutTitle")}</h2>
-                <p className="mt-1 text-gray-500 text-sm">{t("streetAdress")}</p>
+                <p className="mt-1 text-gray-500 text-sm">
+                  {t("streetAdress")}
+                </p>
               </div>
             </div>
 
-            {/* Render selected content */}
             {selectedItem === "employee" && (
               <Employee
                 setSelectedEmployee={setSelectedEmployee}
@@ -122,6 +171,8 @@ function test(){
               <DateTime
                 selectedTime={selectedTime}
                 setSelectedTime={setSelectedTime}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
               />
             )}
             {selectedItem === "services" && (
@@ -131,27 +182,56 @@ function test(){
               />
             )}
 
-            {/* Button to proceed or go back based on selection */}
-            {selectedEmployee && selectedTime !== "services" && (
-              <SelectButton
-                text={
-                  selectedItem === "services"
-                    ? t("selectEmployee")
+            {!isFormComplete && ( <SelectButton text={
+                  selectedItem === "employee"
+                    ? t("selectDateTime")
                     : selectedItem === "date"
                     ? t("selectService")
-                    : t("selectService")
+                    : t("selectEmployee")
                 }
                 onClick={(e) => {
                   e.preventDefault();
-                  if (selectedItem === "services") {
-                    setSelectedItem("employee");
-                  } else if (selectedItem === "employee") {
+                  if (selectedItem === "employee") {
                     setSelectedItem("date");
-                  } else {
+                  } else if (selectedItem === "date") {
                     setSelectedItem("services");
+                  } else {
+                    setSelectedItem("employee");
                   }
                 }}
               />
+            )}
+
+            {/* {!isFormComplete && selectedItem !== "employee" && (
+              <SelectButton
+                text={
+                  selectedItem === "employee"
+                    ? t("selectDateTime")
+                    : selectedItem === "date"
+                    ? t("selectService")
+                    : t("selectEmployee")
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (selectedItem === "employee" && selectedEmployee) {
+                    setSelectedItem("date");
+                  } else if (selectedItem === "date" && selectedDate) {
+                    setSelectedItem("services");
+                  } else if (selectedItem === "services" && selectedService) {
+                    setSelectedItem("employee");
+                  }
+                }}
+              />
+            )} */}
+
+            {isFormComplete && (
+              <button
+                type="button"
+                onClick={handleBookAppointment}
+                className="bg-black text-white w-full py-2 rounded-lg mt-5 hover:scale-95"
+              >
+                {t("makeAppointment")}
+              </button>
             )}
           </div>
         )}

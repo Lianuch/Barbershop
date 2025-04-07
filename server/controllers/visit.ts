@@ -3,42 +3,74 @@ import Visit from "../models/visit";
 import { Client } from "../models/client";
 import Barber from "../models/barbers";
 import { Favor } from "../models/favors";
-
+import AppError from "../utils/appError";
+import mailService from "../service/mailService";
+import visitService from "../service/visitService";
 const getVisits = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const visits = await Visit.find()
-      .populate("barber", "image barberCategory translation")
-      .populate("client", "email")
-      .populate("favor", "time price")
-      .select("-__v")
-
-    if (!visits.length) {
-      return res.status(404).json({ error: "Visits  not found" });
-    }
+    const visits = await visitService.getVisits();
 
     res.status(200).json(visits);
   } catch (e) {
     next(e);
   }
 };
+// const addVisits = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//    const clientId = req.client?.id
+
+//   if(!clientId) 
+//     return next(AppError.BadRequest("Client not found"))
+
+//     const { date, comment, barber, favor } = req.body;
+//     if (!date || !comment || !barber || !favor) {
+//       return next(AppError.BadRequest("All fields are required"));
+//     }
+
+//     const visit = await visitService.addVisits(
+//       date,
+//       comment,
+//       barber,
+//       favor,
+//       clientId
+//     );
+
+//     res.status(200).json(visit);
+//   } catch (e) {
+//     next(e);
+//   }
+// };
 const addVisits = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { date, comment, barber, client, favor } = req.body;
-    if (!date || !comment || !barber || !client || !favor) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-    const visit = new Visit({ date, comment, barber, client, favor });
+const {date, time, barberId, favorId, comment, clientId  } = req.body;
 
-    await visit.save();
+// console.log("date:",date,"time:", time,"barberid", barberId,"favorid", favorId,"comment:", comment,"clientid:", clientId);
 
-    await Barber.findByIdAndUpdate(barber, { $push: { visits: visit._id } });
-    await Client.findByIdAndUpdate(client, { $push: { visits: visit._id } });
-    await Favor.findByIdAndUpdate(favor, { $push: { visits: visit._id } });
+if(!date || !time || !barberId || !favorId || !clientId) {
+  return next(AppError.BadRequest("All fields are required"));
+}
+try{
+  const visit = await Visit.create({
+    date: new Date(date),
+    time:time,
+    barber: barberId,
+    favor: favorId,
+    client: clientId,
+    comment: comment || null
+  })
+  // const visit = visitService.addVisits(
+  //    date,
+  //   time,
+  //   barberId,
+  //   favorId,
+  //   clientId,
+  //   comment
+  // )
+  res.status(200).json(visit);
+}
+catch(e){
+  next(e);
+}
 
-    res.status(200).json(visit);
-  } catch (e) {
-    next(e);
-  }
-};
+}
 
 export { getVisits, addVisits };
