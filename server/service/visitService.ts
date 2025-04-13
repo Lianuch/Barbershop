@@ -8,36 +8,32 @@ import mailService from "./mailService";
 class VisitService {
   async addVisits(
     date: Date,
-    comment: string,
-    barber: string,
-    favor: string,
+    time: string,
+    barberId: string,
+    favorId: string,
+    comment: string | null,
     clientId: string
   ) {
-    if (!date || !barber || !favor || !clientId) {
+    if (!date || !time || !barberId || !favorId || !clientId) {
       throw AppError.BadRequest("All fields are required");
       }
   
-      const [barberExists, favorExists, clientData] = await Promise.all([
-        Barber.findById(barber),
-        Favor.findById(favor),
-        Client.findById(clientId),
-      ]);
-      if(!barberExists || !favorExists || !clientData) {
-        throw AppError.BadRequest("Data not found");
-      }
-      const visit = new Visit({
-        date,
-        comment,
+      const clientData = await Client.findById(clientId);
+      const visit = await Visit.create({
+        date: new Date(date),
+        time:time,
+        barber: barberId,
+        favor: favorId,
         client: clientId,
-        barber,
-        favor,
+        comment: comment || null,
       });
   
       await visit.save();
   
       await Promise.all([
-        Barber.findByIdAndUpdate(barber, { $push: { visits: visit._id } }),
-        Favor.findByIdAndUpdate(favor, { $push: { visits: visit._id } }),
+        Barber.findByIdAndUpdate(barberId, { $push: { visits: visit._id } }),
+        Favor.findByIdAndUpdate(favorId, { $push: { visits: visit._id } }),
+        Client.findByIdAndUpdate(clientId, { $push: { visits: visit._id } }),
       ]);
       if (clientData.email) {
         await mailService.sendRecordInformation(clientData.email, date);
@@ -46,15 +42,28 @@ class VisitService {
       return visit;
     
   }
-  
   async getVisits() {
     const visits = await Visit.find()
-      .populate("barber", "image barberCategory translation")
+      // .populate("barber", "image barberCategory translation")
+      // .populate("client", "email")
+      // .populate("favor", "time price translations")
+      // .select("-__v");
+
+      .populate({
+        path: "barber",
+        populate: [
+          { path: "translation" },
+          { path: "barberCategory" },
+        ],
+      })
       .populate("client", "email")
-      .populate("favor", "time price")
+      .populate({
+        path: "favor",
+        populate: { path: "translations" },
+      })
       .select("-__v");
 
-    if (!visits.length) {
+      if (!visits.length) {
       return AppError.BadRequest("Visits not found");
     }
     return visits;

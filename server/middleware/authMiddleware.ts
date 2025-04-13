@@ -32,7 +32,6 @@ export const authMiddleware = async (
         return next(AppError.UnauthorizedError());
       }
   
-      console.log("✅ Token validated for user:", clientData);
       req.client = clientData; 
       next();
   } catch (e) {

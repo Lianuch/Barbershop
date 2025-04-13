@@ -1,7 +1,12 @@
-import axios from "axios";
+import { AxiosResponse } from "axios";
 import $api from "./httpCommon";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import IVisit from "../interfaces/IVisit";
+export default class VisitService {
+  static fetchVisits(): Promise<AxiosResponse<IVisit[]>> {
+    return $api.get<IVisit[]>("/visits");
+  }}
 
 export const bookAppointment = createAsyncThunk(
   "appointments/book",

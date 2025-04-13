@@ -5,72 +5,55 @@ import Barber from "../models/barbers";
 import { Favor } from "../models/favors";
 import AppError from "../utils/appError";
 import mailService from "../service/mailService";
-import visitService from "../service/visitService";
+import VisitService from "../service/visitService";
 const getVisits = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const visits = await visitService.getVisits();
+    const visits = await VisitService.getVisits();
 
     res.status(200).json(visits);
   } catch (e) {
     next(e);
   }
 };
+const addVisits = async (req: Request, res: Response, next: NextFunction) => {
+  const { date, time, barberId, favorId, comment, clientId } = req.body;
+  try {
+    const visit = await VisitService.addVisits(
+      date,
+      time,
+      barberId,
+      favorId,
+      comment,
+      clientId
+    );
+
+    res.status(200).json(visit);
+  } catch (e) {
+    next(e);
+  }
+};
+
+// console.log("date:",date,"time:", time,"barberid", barberId,"favorid", favorId,"comment:", comment,"clientid:", clientId);
 // const addVisits = async (req: Request, res: Response, next: NextFunction) => {
+//   const { date, time, barberId, favorId, comment, clientId } = req.body;
+
+//   if (!date || !time || !barberId || !favorId || !clientId) {
+//     return next(AppError.BadRequest("All fields are required"));
+//   }
 //   try {
-//    const clientId = req.client?.id
-
-//   if(!clientId) 
-//     return next(AppError.BadRequest("Client not found"))
-
-//     const { date, comment, barber, favor } = req.body;
-//     if (!date || !comment || !barber || !favor) {
-//       return next(AppError.BadRequest("All fields are required"));
-//     }
-
-//     const visit = await visitService.addVisits(
-//       date,
-//       comment,
-//       barber,
-//       favor,
-//       clientId
-//     );
+//     const visit = await Visit.create({
+//       date: new Date(date),
+//       time: time,
+//       barber: barberId,
+//       favor: favorId,
+//       client: clientId,
+//       comment: comment || null,
+//     });
 
 //     res.status(200).json(visit);
 //   } catch (e) {
 //     next(e);
 //   }
 // };
-const addVisits = async (req: Request, res: Response, next: NextFunction) => {
-const {date, time, barberId, favorId, comment, clientId  } = req.body;
-
-// console.log("date:",date,"time:", time,"barberid", barberId,"favorid", favorId,"comment:", comment,"clientid:", clientId);
-
-if(!date || !time || !barberId || !favorId || !clientId) {
-  return next(AppError.BadRequest("All fields are required"));
-}
-try{
-  const visit = await Visit.create({
-    date: new Date(date),
-    time:time,
-    barber: barberId,
-    favor: favorId,
-    client: clientId,
-    comment: comment || null
-  })
-  // const visit = visitService.addVisits(
-  //    date,
-  //   time,
-  //   barberId,
-  //   favorId,
-  //   clientId,
-  //   comment
-  // )
-  res.status(200).json(visit);
-}
-catch(e){
-  next(e);
-}
-
-}
 
 export { getVisits, addVisits };

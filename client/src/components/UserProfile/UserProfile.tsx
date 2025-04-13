@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import IClient from "../../interfaces/IClient";
 import ClientService from "../../Services/clientService";
 import { useTranslation } from "react-i18next";
+import { Visit } from "../Visit/Visit";
 
 export const UserProfile: React.FC = () => {
   const [date, setDate] = useState(new Date());
@@ -60,7 +61,7 @@ export const UserProfile: React.FC = () => {
     visible: (custom: number) => ({
       x: 0,
       opacity: 1,
-      transition: { delay: custom * 0.57 },
+      transition: { delay: custom * 0.47 },
     }),
   };
   return (
@@ -131,15 +132,12 @@ export const UserProfile: React.FC = () => {
           >
             {t("visits")}
           </motion.h1>
-          <div className="flex flex-col gap-4">
-            <div className="p-4 bg-gray-100 rounded-lg shadow">
-              <p>
-                JavaScript arrays are resizable and can contain a mix of
-                different data types.
-              </p>
+          <motion.div  variants={textAnimation}
+          custom={5} className="flex flex-col gap-4 items-center justify-center">
+            <div className="p-4 w-full">
+              <Visit/>
             </div>
-       
-          </div>
+          </motion.div>
         </div>
         <div className="flex justify-end mt-4" onClick={() => navigate("/")}>
           <Exit setIsExitVisible={() => {}} />
