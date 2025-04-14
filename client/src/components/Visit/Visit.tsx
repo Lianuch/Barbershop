@@ -6,7 +6,6 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { fetchFavors } from "../../slices/favorsSlice";
 import { useLanguage } from "../../hooks/useLanguage";
 import moment from "moment";
-import { t } from "i18next";
 
 export const Visit = () => {
   const { i18n } = useTranslation();
