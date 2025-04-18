@@ -29,6 +29,8 @@
   "selectService":"Select a service",
   "timeForBooking":"Nearest time slot for the appointment",
 
-  "makeAppointment":"Done"
+  "makeAppointment":"Done",
+  "onlineAppointment":"Your appoinment is confirmed"
+
   
 }

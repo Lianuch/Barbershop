@@ -12,9 +12,9 @@ import { SelectButton } from "./SelectButton/SelectButton";
 import { Dayjs } from "dayjs";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { bookAppointment } from "../../Services/visitService";
-import IClient from "../../interfaces/IClient";
 import { useFetchClient } from "../../hooks/useFetchClient";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -22,6 +22,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+
 
   const [isFormComplete, setIsFormComplete] = useState(false);
   useEffect(() => {
@@ -53,11 +54,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
 
 
   const handleBookAppointment = () => {
-    console.log("Selected Employee:", selectedEmployee);
-    // console.log("Selected Date:", selectedDate);
-    // console.log("Selected Time:", selectedTime);
-    // console.log("Selected Service:", selectedService);
-
     if (
       !selectedEmployee ||
       !selectedDate ||
@@ -65,7 +61,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
       !selectedService ||
       !client 
     ) {
-      console.log("No selected appointment data");
       return;
     }
     
@@ -80,6 +75,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
 
     console.log("Appointment Data:", appointmentData);
     dispatch(bookAppointment(appointmentData));
+
+    setIsOpen(false);
+
+    setTimeout(() => {
+      toast.success(t("onlineAppointment"), {
+        position:"top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        theme: "dark",
+      })
+    }, 1000);
+
   };
 
   return (
@@ -202,27 +212,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
               />
             )}
 
-            {/* {!isFormComplete && selectedItem !== "employee" && (
-              <SelectButton
-                text={
-                  selectedItem === "employee"
-                    ? t("selectDateTime")
-                    : selectedItem === "date"
-                    ? t("selectService")
-                    : t("selectEmployee")
-                }
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (selectedItem === "employee" && selectedEmployee) {
-                    setSelectedItem("date");
-                  } else if (selectedItem === "date" && selectedDate) {
-                    setSelectedItem("services");
-                  } else if (selectedItem === "services" && selectedService) {
-                    setSelectedItem("employee");
-                  }
-                }}
-              />
-            )} */}
 
             {isFormComplete && (
               <button
