@@ -30,7 +30,10 @@
   "timeForBooking":"Nearest time slot for the appointment",
 
   "makeAppointment":"Done",
-  "onlineAppointment":"Your appoinment is confirmed"
+  "onlineAppointment":"Your appoinment is confirmed",
+
+  "EditData":"Редагувати та зберегти"
+
 
   
 }

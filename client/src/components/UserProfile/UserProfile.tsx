@@ -6,12 +6,18 @@ import IClient from "../../interfaces/IClient";
 import ClientService from "../../Services/clientService";
 import { useTranslation } from "react-i18next";
 import { Visit } from "../Visit/Visit";
+import { EditUserData } from "../EditUserData/EditUserData";
 
 export const UserProfile: React.FC = () => {
   const [date, setDate] = useState(new Date());
   const [client, setClient] = useState<IClient | null>(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [isEditingOpen, setisEditingOpen] = useState(false);
+
+  const handleEdit = () => {
+    setisEditingOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -118,7 +124,10 @@ export const UserProfile: React.FC = () => {
               <p className="text-gray-500 text-sm">{client?.email}</p>
             </div>
             <div>
-              <button className="w-[120px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button
+                onClick={handleEdit}
+                className="w-[120px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
                 {t("edit")}
               </button>
             </div>
@@ -132,10 +141,13 @@ export const UserProfile: React.FC = () => {
           >
             {t("visits")}
           </motion.h1>
-          <motion.div  variants={textAnimation}
-          custom={5} className="flex flex-col gap-4 items-center justify-center">
+          <motion.div
+            variants={textAnimation}
+            custom={5}
+            className="flex flex-col gap-4 items-center justify-center"
+          >
             <div className="p-4 w-full">
-              <Visit/>
+              <Visit />
             </div>
           </motion.div>
         </div>
@@ -143,6 +155,13 @@ export const UserProfile: React.FC = () => {
           <Exit setIsExitVisible={() => {}} />
         </div>
       </div>
+      {isEditingOpen && (
+        <EditUserData
+
+          isEditingOpen={isEditingOpen}
+          setisEditingOpen={setisEditingOpen}
+        />
+      )}
     </motion.div>
   );
 };
