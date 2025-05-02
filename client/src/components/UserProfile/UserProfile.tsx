@@ -6,7 +6,7 @@ import IClient from "../../interfaces/IClient";
 import ClientService from "../../Services/clientService";
 import { useTranslation } from "react-i18next";
 import { Visit } from "../Visit/Visit";
-import { EditUserData } from "../EditUserData/EditUserData";
+// import { EditUserData } from "../EditUserData/EditUserData";
 
 export const UserProfile: React.FC = () => {
   const [date, setDate] = useState(new Date());
@@ -124,12 +124,18 @@ export const UserProfile: React.FC = () => {
               <p className="text-gray-500 text-sm">{client?.email}</p>
             </div>
             <div>
-              <button
+              {/* <button
                 onClick={handleEdit}
-                className="w-[120px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="w-[160px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 {t("edit")}
-              </button>
+              </button> */}
+              <div
+                className="flex justify-end mt-4"
+                onClick={() => navigate("/")}
+              >
+                <Exit setIsExitVisible={() => {}} />
+              </div>
             </div>
           </motion.div>
 
@@ -151,17 +157,13 @@ export const UserProfile: React.FC = () => {
             </div>
           </motion.div>
         </div>
-        <div className="flex justify-end mt-4" onClick={() => navigate("/")}>
-          <Exit setIsExitVisible={() => {}} />
-        </div>
       </div>
-      {isEditingOpen && (
+      {/* {isEditingOpen && (
         <EditUserData
-
           isEditingOpen={isEditingOpen}
           setisEditingOpen={setisEditingOpen}
         />
-      )}
+      )} */}
     </motion.div>
   );
 };

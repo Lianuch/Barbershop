@@ -15,6 +15,8 @@ import { bookAppointment } from "../../Services/visitService";
 import { useFetchClient } from "../../hooks/useFetchClient";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { SignupPage } from "../../Pages/SignupPage/SignupPage";
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -23,8 +25,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
-
   const [isFormComplete, setIsFormComplete] = useState(false);
+  const { isAuth } = useAppSelector((state) => state.auth);
+
   useEffect(() => {
     if (selectedEmployee && selectedDate && selectedTime && selectedService) {
       setIsFormComplete(true);
@@ -35,8 +38,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
     } else {
       setIsFormComplete(false);
     }
- 
   }, [selectedEmployee, selectedDate, selectedTime, selectedService]);
+
+useEffect(()=>{
+  if (isOpen && !isAuth) {
+    setShowSignupModal(true);
+  }
+},[isOpen, isAuth]);
 
   const dispatch = useAppDispatch();
 
@@ -47,23 +55,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const handleBackClick = () => {
     setSelectedItem(null);
   };
-  const client = useFetchClient(); 
+  const client = useFetchClient();
   // console.log(client);
-  
+
   // console.log("date:",date,"time:", time,"barberid", barberId,"favorid", favorId,"comment:", comment,"clientid:", clientId);
 
+  const [showSignupModal, setShowSignupModal] = useState(false);
 
   const handleBookAppointment = () => {
+  
     if (
       !selectedEmployee ||
       !selectedDate ||
       !selectedTime ||
       !selectedService ||
-      !client 
+      !client
     ) {
       return;
     }
-    
+
     const appointmentData = {
       clientId: client.id,
       barberId: selectedEmployee,
@@ -80,16 +90,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
 
     setTimeout(() => {
       toast.success(t("onlineAppointment"), {
-        position:"top-center",
+        position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: false,
         theme: "dark",
-      })
+      });
     }, 1000);
-
   };
 
   return (
@@ -100,7 +109,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
           className="fixed inset-0 bg-black opacity-50 z-40"
         ></div>
       )}
-
+      {showSignupModal && (
+        <div className="fixed inset-0 z-[999] flex justify-center items-center bg-black bg-opacity-50">
+          <SignupPage
+            closeModal={() => setShowSignupModal(false)}
+            switchToLogin={() => setShowSignupModal(false)}
+          />
+        </div>
+      )}
       <div
         className={`fixed top-0 right-0 h-full w-3/4 sm:w-1/2 md:w-1/3 lg:w-1/4 rounded-l-md bg-slate-300 shadow-lg p-5 transform transition-transform duration-300 z-50 ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -192,7 +208,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
               />
             )}
 
-            {!isFormComplete && ( <SelectButton text={
+            {!isFormComplete && (
+              <SelectButton
+                text={
                   selectedItem === "employee"
                     ? t("selectDateTime")
                     : selectedItem === "date"
@@ -211,7 +229,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 }}
               />
             )}
-
 
             {isFormComplete && (
               <button

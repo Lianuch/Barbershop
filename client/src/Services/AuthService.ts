@@ -6,15 +6,33 @@ export default class AuthService {
     return $api.post<AuthResponse>("/clients/login", { email, password });
   }
 
-  static async registration(name: string,email: string, password: string) {
-    return $api.post<AuthResponse>("/clients/registration", {name, email, password });
+  static async registration(name: string, email: string, password: string) {
+    return $api.post<AuthResponse>("/clients/registration", {
+      name,
+      email,
+      password,
+    });
   }
 
   static async logout() {
     return $api.post("/clients/logout");
   }
-  static async activate(link:string) {
+  static async activate(link: string) {
     return $api.get(`/clients/activate/${link}`);
   }
 
+  static async requestPasswordChange(
+    clientId: string,
+    currentPassword: string,
+    newPassword: string
+  ) {
+    return $api.post(`/clients/request-password-change`, {
+      clientId,
+      currentPassword,
+      newPassword,
+    });
+  }
+  static async passwordChange(token: string) {
+    return $api.post(`/clients/confirm-password-change?token=${token}`);
+  }
 }

@@ -28,7 +28,7 @@ class ClientController {
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const {  email, password } = req.body;
+      const { email, password } = req.body;
       const clientData = await clientService.login(email, password);
       res.cookie("refreshToken", clientData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -82,17 +82,41 @@ class ClientController {
       next(e);
     }
   }
-   async getClient(req: Request, res: Response, next: NextFunction) {
-      try {
-        const client = req.client;
-        if (!client) {
-          throw AppError.BadRequest("Client not found");
-        }
-        return res.json(client);
-      } catch (e) {
-        next(e);
+  async getClient(req: Request, res: Response, next: NextFunction) {
+    try {
+      const client = req.client;
+      if (!client) {
+        throw AppError.BadRequest("Client not found");
       }
+      return res.json(client);
+    } catch (e) {
+      next(e);
     }
+  }
+  async requestPasswordChange(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {  newPassword, currentPassword } = req.body;
+      const clientId = req.client?.id;
+      await clientService.requestPasswordChange(
+        clientId,
+        currentPassword,
+        newPassword
+      );
+      
+      return res.status(200).json({ message: "Confirmation email sent" });
+    } catch (e) {
+      next(e);
+    }
+  }
+  async confirmPasswordChange(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { token } = req.query;
+      await clientService.confirmPasswordChange(token);
+      return res.status(200).json({ message: "Password successfully changed" });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export default new ClientController();

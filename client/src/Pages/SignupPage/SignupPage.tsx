@@ -5,7 +5,7 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { registerUser } from "../../slices/authThunks/registerClient";
 import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
-import { ValidationSchema } from "../../schemas";
+import { SignupValidationSchema } from "../../schemas";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -19,15 +19,23 @@ export const SignupPage: React.FC<SignupProps> = ({
   const navigate = useNavigate();
   const { loading } = useAppSelector((state) => state.auth);
 
-  const handleSubmit = async (values: { name: string; email: string; password: string }) => {
+  const handleSubmit = async (values: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    console.log("Form submitted with values:", values);
+
     await dispatch(registerUser(values));
     navigate("/activation");
   };
   return (
     <Formik
       initialValues={{ name: "", email: "", password: "" }}
-      validationSchema={ValidationSchema}
-      onSubmit={handleSubmit}
+      validationSchema={SignupValidationSchema}
+      onSubmit={(values) => {
+        handleSubmit(values);
+      }}
     >
       {({ isSubmitting }) => (
         <Form className="max-w-[400px] my-auto mx-auto ">
@@ -53,7 +61,7 @@ export const SignupPage: React.FC<SignupProps> = ({
                   className="text-black rounded-md px-2 py-0.5"
                   placeholder="Name"
                 />
-                  <ErrorMessage
+                <ErrorMessage
                   name="name"
                   component="div"
                   className="text-red-500 "

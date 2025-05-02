@@ -4,7 +4,7 @@ import Token from "../models/token";
 class TokenService {
   generateTokens(payload: any) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: "30m",
+      expiresIn: "15m",
     });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
       expiresIn: "30d",
@@ -12,6 +12,22 @@ class TokenService {
 
     return { accessToken, refreshToken };
   }
+  generatePasswordChangeToken(payload: { id: string; newPassword: string }) {
+   const token = jwt.sign(payload, process.env.JWT_PASSWORD_CHANGE_SECRET
+    , {
+      expiresIn: "15m",
+    });
+    return token;  
+  }
+  validatePasswordChangeToken(token: string) {
+    try {
+      const payload = jwt.verify(token, process.env.JWT_PASSWORD_CHANGE_SECRET);
+      return payload;
+    } catch (err) {
+      return null;
+    }
+  }
+  
 
   validateAccessToken(token: string) {
     try {

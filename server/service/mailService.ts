@@ -8,11 +8,11 @@ class MailService {
   constructor() {
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT), 
+      port: Number(process.env.SMTP_PORT),
       secure: false,
       auth: {
-        user: process.env.SMTP_USER, 
-        pass: process.env.SMTP_PASS, 
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     });
   }
@@ -31,7 +31,9 @@ class MailService {
     });
   }
   async sendRecordInformation(to: string, date: Date) {
-    const formattedDate = format(date, "dd MMMM yyyy 'о' HH:mm", { locale: uk });
+    const formattedDate = format(date, "dd MMMM yyyy 'о' HH:mm", {
+      locale: uk,
+    });
     await this.transporter.sendMail({
       from: `"Bliss Barbershop" <${process.env.SMTP_USER}>`,
       to,
@@ -40,6 +42,21 @@ class MailService {
         <div>
           <h1>Добрий день! Ви записані на: ${formattedDate}</h1>
         </div>
+      `,
+    });
+  }
+  async sendPasswordChanging(to: string, link: string) {
+    await this.transporter.sendMail({
+      from: `"Bliss Barbershop" <${process.env.SMTP_USER}>`,
+      to,
+      subject: `Підтвердіть зміну паролю`,
+      html: `
+        <div>
+        <h2>Ми отримали запит на зміну паролю для вашого акаунту на нашому сайті.</h2>
+        <h2>Якщо це були ви, будь ласка, натисніть на посилання нижче для підтвердження зміни паролю:</h2>
+          <a href="${link}">${link}</a>
+        </div><br>
+        <h2>Якщо ви не запитували зміну паролю, ви можете проігнорувати це повідомлення.</h2>
       `,
     });
   }

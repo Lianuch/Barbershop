@@ -15,7 +15,7 @@ export const Visit = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     VisitService.fetchVisits().then((res) => {
-      console.log("Visits:", res.data); // <- Check this
+      // console.log("Visits:", res.data); // <- Check this
       setVisits(res.data);
     });
     dispatch(fetchFavors(i18n.language));

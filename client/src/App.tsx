@@ -11,6 +11,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { UserProfile } from "./components/UserProfile/UserProfile";
 import { ProfileLayout } from "./Pages/ProfileLayout/ProfileLayout";
 import { ActivationPage } from "./Pages/ActivationPage/ActivationPage";
+import { ConfirmPasswordChange } from "./components/ConfirmPasswordChange/ConfirmPasswordChange";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -34,6 +35,8 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        
+        <Route path="/confirm-password-change" element={<ConfirmPasswordChange />} />
 
         <Route path="/activation" element={<ActivationPage />} />
         {isAuth ? (

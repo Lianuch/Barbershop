@@ -26,7 +26,6 @@ class ClientService {
       email,
       `${process.env.API_URL}/api/clients/activate/${activationLink}`
     );
-    
 
     const clientDto = new ClientDto(client);
     const tokens = tokenService.generateTokens({ ...clientDto });
@@ -48,8 +47,8 @@ class ClientService {
     await client.save();
   }
 
-  async login( email: string, password: string) {
-    const client = await Client.findOne({ email }).select("+password");;    
+  async login(email: string, password: string) {
+    const client = await Client.findOne({ email }).select("+password");
 
     if (!client) {
       throw AppError.BadRequest("Client not found");
@@ -57,7 +56,7 @@ class ClientService {
 
     const isPassEquals = await bcrypt.compare(password, client.password);
     if (!isPassEquals) {
-        throw AppError.BadRequest("Incorrect password");
+      throw AppError.BadRequest("Incorrect password");
     }
 
     const clientDto = new ClientDto(client);
@@ -79,8 +78,8 @@ class ClientService {
 
     const clientData = tokenService.validateRefreshToken(refreshToken);
     const tokenFromDB = await tokenService.findToken(refreshToken);
-    if(!clientData || !tokenFromDB) {
-        throw AppError.UnauthorizedError();
+    if (!clientData || !tokenFromDB) {
+      throw AppError.UnauthorizedError();
     }
 
     const client = await Client.findById(clientData.id);
@@ -90,14 +89,58 @@ class ClientService {
     await tokenService.saveToken(clientDto.id, tokens.refreshToken);
 
     return { ...tokens, client: clientDto };
-
   }
 
   async getAllClients() {
     const clients = await Client.find();
     return clients;
   }
- 
-}
+
+  async requestPasswordChange(
+    clientId: string,
+    currentPassword: string,
+    newPassword: string
+  ) {
+    const client = await Client.findById(clientId);
+    if (!client) {
+      throw AppError.BadRequest("Client not found");
+    }
+    const isPassEquals = await bcrypt.compare(currentPassword, client.password);
+
+    if (!isPassEquals) {
+      throw AppError.BadRequest("Incorrect password");
+    }
+  
+    const passwordChangeToken = tokenService.generatePasswordChangeToken({
+      id: client.id,
+      newPassword,
+    });
+  
+    const activationLink = `${process.env.CLIENT_URL}/confirm-password-change?token=${passwordChangeToken}`;
+  
+    await mailService.sendPasswordChanging(client.email, activationLink);
+  }
+  
+  async confirmPasswordChange(token: string) {
+    const payload = tokenService.validatePasswordChangeToken(token);
+    if (!payload) {
+      throw AppError.UnauthorizedError();
+    }
+  
+    const { id, newPassword } = payload as { id: string; newPassword: string };
+  
+    const client = await Client.findById(id);
+    if (!client) {
+      throw AppError.BadRequest("Client not found");
+    }
+  
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    client.password = hashedPassword;
+    await client.save();
+  
+    return { message: "Password successfully changed" };
+  }
+
+}  
 
 export default new ClientService();

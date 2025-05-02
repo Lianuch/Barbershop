@@ -26,7 +26,7 @@ export const Exit: React.FC<ExitProps> = ({ setIsExitVisible }) => {
     <div>
       <IoMdExit
         onClick={handleLogout}
-        size={25}
+        size={30}
         className="cursor-pointer hover:scale-110 hover:text-blue-500"
       />
     </div>

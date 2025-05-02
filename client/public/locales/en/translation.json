@@ -21,7 +21,7 @@
   "createAccount":"Create an account",
 
   "welcome":"Welcome",
-  "edit":"Edit",
+  "edit":"Reset password",
   "visits":"Your visits",
   
   "selectEmployee":"Choose a specialist",
@@ -32,7 +32,7 @@
   "makeAppointment":"Done",
   "onlineAppointment":"Your appoinment is confirmed",
 
-  "EditData":"Редагувати та зберегти"
+  "EditData":"Edit and save"
 
 
   

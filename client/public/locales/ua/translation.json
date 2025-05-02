@@ -21,7 +21,7 @@
   "createAccount":"Створити акаунт",
 
   "welcome":"Ласкаво просимо",
-  "edit":"Редагувати",
+  "edit":"Скинути пароль",
   "visits":"Ваші записи",
 
   "selectEmployee":"Вибрати співробітника",
@@ -32,8 +32,7 @@
   "makeAppointment":"Готово",
   "onlineAppointment":"Ви успішно записані",
 
-  "EditData":"Edit and save"
-
+  "EditData":"Редагувати та зберегти"
 
 
 }
