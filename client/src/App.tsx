@@ -12,6 +12,7 @@ import { UserProfile } from "./components/UserProfile/UserProfile";
 import { ProfileLayout } from "./Pages/ProfileLayout/ProfileLayout";
 import { ActivationPage } from "./Pages/ActivationPage/ActivationPage";
 import { ConfirmPasswordChange } from "./components/ConfirmPasswordChange/ConfirmPasswordChange";
+import AddBarber from "./components/AddBarber/AddBarber";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,6 +37,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         
+        <Route path="/add-barber" element={<AddBarber />} />
         <Route path="/confirm-password-change" element={<ConfirmPasswordChange />} />
 
         <Route path="/activation" element={<ActivationPage />} />
