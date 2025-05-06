@@ -14,7 +14,8 @@ class ClientController {
       const clientData = await clientService.registration(
         name,
         email,
-        password
+        password,
+        "client"
       );
       res.cookie("refreshToken", clientData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,

@@ -4,12 +4,16 @@ import { IoMdClose } from "react-icons/io";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { useState } from "react";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { addBarber, removeBarber } from "../../slices/adminSlice";
+import { Barbers } from "../../Types/Barbers";
 export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
     const { currentLanguage } = useLanguage();
     const barberTranslation = barber.translation.find(
       (t) => t.language === currentLanguage
     );
   
+    const dispatch = useAppDispatch()
     const [isEditing, setIsEditing] = useState(false);
     const [image, setImage] = useState("");
     const [name, setName] = useState(barberTranslation?.name || "");
@@ -25,6 +29,10 @@ export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
       setIsEditing(false);
     };
   
+    const handleDelete = () =>{
+      dispatch(removeBarber(barber._id))
+    }
+ 
     return (
       <div className="flex items-center bg-slate-200 rounded-lg p-4 gap-4 mb-4 shadow-sm">
         <img
@@ -79,7 +87,7 @@ export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
           <button onClick={() => setIsEditing(true)} type="button">
             <MdEdit size={23} />
           </button>
-          <button className="text-red-500" type="button">
+          <button onClick={handleDelete} className="text-red-500" type="button">
             <IoMdClose size={25} />
           </button>
         </div>

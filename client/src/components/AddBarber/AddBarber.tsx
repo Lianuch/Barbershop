@@ -1,41 +1,35 @@
-import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { AdminBarberList } from "../AdminBarberList/AdminBarberList";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { addBarber } from "../../slices/adminSlice";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 const AddBarberSchema = Yup.object().shape({
+  image: Yup.string().url("Invalid URL").required("Image is required"),
   name: Yup.string().required("Name is required"),
-  specialization: Yup.string().required("Specialization is required"),
-  price: Yup.number()
-    .required("Price is required")
-    .positive("Price must be a positive number"),
-  experience: Yup.number()
-    .required("Experience is required")
-    .positive("Experience must be a positive number")
-    .integer("Experience must be an integer"),
+  surname: Yup.string().required("Surname is required"),
+  coef: Yup.number().min(0.1).required("Coefficient is required"),
 });
+
 
 const AddBarber = () => {
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (values: any) => {
-    setLoading(true);
+const { list, loading } = useAppSelector((state) => state.barbers);
+ const categories = list.map((barber)=>barber.barberCategory?.categoryName)
+  const handleCreateSubmit = async (values: any) => {
     try {
-      // Call the action to add the barber (you will need to implement this action)
-      //   await dispatch(addBarber(values));
+      await dispatch(addBarber(values));
       toast.success("Barber added successfully!");
     } catch (error) {
       toast.error("Failed to add barber. Please try again.");
     }
-    setLoading(false);
   };
 
   return (
     <div className="w-1/2 mx-auto mt-8 ">
-      <h2 className="text-center text-3xl font-bold">Menu</h2>
+      <h2 className="text-center text-3xl font-bold">Admin Panel</h2>
 
       <Formik
         initialValues={{
@@ -46,11 +40,11 @@ const AddBarber = () => {
           coef: 1.0,
         }}
         validationSchema={AddBarberSchema}
-        onSubmit={handleSubmit}
+        onSubmit={handleCreateSubmit}
       >
         {({ isSubmitting }) => (
           <Form className="space-y-4 p-6 rounded-lg shadow-lg bg-gray-100">
-                  <h2 className="text-center text-xl font-bold">Add New Barber</h2>
+            <h2 className="text-center text-xl font-bold">Add New Barber</h2>
 
             <div>
               <label className="block font-medium text-sm">Image URL</label>
@@ -99,8 +93,12 @@ const AddBarber = () => {
                 name="category"
                 className="w-full p-2 border border-gray-300 rounded-md"
               >
-                <option value="barber">Barber</option>
-                <option value="top_barber">Top Barber</option>
+                   {categories.map((category, id) => (
+                  <option key={id} value={category} >
+                    {category}
+                  </option>
+                ))}
+        
               </Field>
               <ErrorMessage
                 name="category"

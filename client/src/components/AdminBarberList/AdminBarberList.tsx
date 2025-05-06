@@ -34,8 +34,8 @@ export const AdminBarberList: React.FC = () => {
 
         <ul className="gap-2 px-4 ">
           {barbers.map((barber) => (
-            <li>
-              <AdminBarber key={barber._id} barber={barber} />
+            <li key={barber._id}>
+              <AdminBarber  barber={barber} />
             </li>
           ))}
         </ul>

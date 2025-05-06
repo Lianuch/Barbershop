@@ -14,6 +14,7 @@ import { visitRouter } from "./routes/visit";
 import { favorTranslationsRouter } from "./routes/favorTranslations";
 import { errorMiddleware } from "./middleware/errorMiddleware";
 import { tempRouter } from "./routes/tempRouter";
+import { adminRouter } from "./routes/admin";
 
 const app = express();
 app.use(express.json({ limit: "500kb" }));
@@ -24,6 +25,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use("/api/admin", adminRouter); 
 
 app.use("/api/barbers", barberRouter);  
 app.use("/api/barberCategory", barberCategoryRouter); 

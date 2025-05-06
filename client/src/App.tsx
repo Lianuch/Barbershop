@@ -13,6 +13,8 @@ import { ProfileLayout } from "./Pages/ProfileLayout/ProfileLayout";
 import { ActivationPage } from "./Pages/ActivationPage/ActivationPage";
 import { ConfirmPasswordChange } from "./components/ConfirmPasswordChange/ConfirmPasswordChange";
 import AddBarber from "./components/AddBarber/AddBarber";
+import { AdminRoute } from "./Routes/AdminRoute";
+import { AdminPanelPage } from "./Pages/AdminPanelPage/AdminPanelPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,9 +38,19 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        
-        <Route path="/add-barber" element={<AddBarber />} />
-        <Route path="/confirm-password-change" element={<ConfirmPasswordChange />} />
+
+        <Route
+          path="/admin-panel"
+          element={
+            <AdminRoute>
+              <AdminPanelPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/confirm-password-change"
+          element={<ConfirmPasswordChange />}
+        />
 
         <Route path="/activation" element={<ActivationPage />} />
         {isAuth ? (

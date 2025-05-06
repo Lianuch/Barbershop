@@ -8,7 +8,7 @@ export interface IClient extends Document {
   isActivated: boolean;  
   activationLink?: string;
   visits: string[];
-}
+  role: "client" | "admin";}
 
 const clientSchema = new mongoose.Schema<IClient>({
   name: {
@@ -40,6 +40,11 @@ const clientSchema = new mongoose.Schema<IClient>({
       ref: "Visit",
     },
   ],
+  role:{
+    type: String,
+    enum: ["client", "admin"],
+    default: "client"
+  }
 });
 
 

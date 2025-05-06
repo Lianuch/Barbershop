@@ -6,7 +6,7 @@ import mailService from "./mailService";
 import ClientDto from "../dto/clientDto";
 import tokenService from "./tokenService";
 class ClientService {
-  async registration(name: string, email: string, password: string) {
+  async registration(name: string, email: string, password: string, role: "client" | "admin") {
     const candidate = await Client.findOne({ email });
     if (candidate) {
       throw AppError.BadRequest("Client already exists");
@@ -20,6 +20,7 @@ class ClientService {
       email,
       password: hashPassword,
       activationLink,
+      role
     });
 
     await mailService.sendActivationMail(

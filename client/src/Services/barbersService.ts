@@ -7,6 +7,7 @@ const getBarbers = async (lang="ua") => {
 }
 
 const createBarber = async(barber: Barbers) => {
+    
     const response = await $api.post("/barbers", barber);
     return response.data;
 }

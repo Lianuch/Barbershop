@@ -12,6 +12,9 @@ class AppError extends Error {
   static BadRequest(message:string, errors = []) {
     return new AppError(400, message, errors);
   }
+  static ForbiddenError() {
+    return new AppError(403, "Access forbidden");
+  }
 }
 
 export default AppError;

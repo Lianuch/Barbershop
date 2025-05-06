@@ -3,6 +3,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { NavLinks } from "../NavLinks/NavLinks";
 import { useState } from "react";
 import { IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
+import { CiSettings } from "react-icons/ci";
+
 import { Language } from "../Language/Language";
 import { useTranslation } from "react-i18next";
 import { AuthForm } from "../AuthForm/AuthForm";
@@ -19,6 +21,7 @@ export const scrollToSection = (id: string) => {
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { t } = useTranslation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -28,10 +31,10 @@ export const Header = () => {
     setIsSidebarOpen(true);
   };
 
-  const { t } = useTranslation();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const { isAuth } = useAppSelector((state) => state.auth);
+  const { isAdmin } = useAppSelector((state) => state.admin);
   const navigate = useNavigate();
 
   const handleProfile = () => {
@@ -76,7 +79,7 @@ export const Header = () => {
               </div>
 
               <div className="hidden md:block">
-                <div className="flex ml-10 items-baseline space-x-2">
+                <div className="flex ml-10 items-center space-x-2">
                   <button className="p-2 border" onClick={openSidebar}>
                     {t("booking")}
                   </button>
@@ -85,6 +88,11 @@ export const Header = () => {
                   <div onClick={handleProfile}>
                     <AuthForm />
                   </div>
+                  {isAuth && isAdmin && (
+                    <div onClick={() => navigate("/admin-panel")}>
+                      <CiSettings size={25} className="cursor-pointer" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
