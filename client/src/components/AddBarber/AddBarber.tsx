@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { AdminBarberList } from "../AdminBarberList/AdminBarberList";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { addBarber } from "../../slices/adminSlice";
+import { addBarber } from "../../slices/barbersSlice";
 import { useAppSelector } from "../../hooks/useAppSelector";
 
 const AddBarberSchema = Yup.object().shape({

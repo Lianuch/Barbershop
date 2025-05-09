@@ -60,6 +60,7 @@ export const Services = ({
     ),
   ];
 
+
   return (
     <form className="mt-5">
       <h3 className="text-2xl">{t("selectService")}</h3>
@@ -95,6 +96,8 @@ export const Services = ({
                   .filter((favor) => favor.translations.length > 0)
                   .map((favor) => {
                     const key = `${barber._id}_${favor._id}`;
+                    const priceWithCoef = favor.price * barber.coef;
+                    console.log(favor.price, barber.coef, priceWithCoef);
                     return (
                       <div
                         key={key}

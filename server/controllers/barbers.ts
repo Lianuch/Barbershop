@@ -3,6 +3,7 @@ import { BarberTranslation } from "../models/barberTranslations";
 import { cloudinary } from "../config/cloudinaryConfig";
 import Barber from "../models/barbers";
 import Visit from "../models/visit";
+import BarberCategory from "../models/barberCategory";
 
 const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -26,22 +27,41 @@ const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
 const addBarber = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { image, barberCategory, translation, visits, coef } = req.body;
+
+    // Check if required fields are provided
+    if (!image || !barberCategory || !translation || !Array.isArray(translation)) {
+      return res.status(400).json({ error: "Missing required fields: image, barberCategory, or translation" });
+    }
+
+    const category = await BarberCategory.findById(barberCategory);
+    if (!category) {
+      return res.status(404).json({ error: "Barber category not found" });
+    }
+
     const barber = new Barber({
       image,
       barberCategory,
-      translation,
-      visits,
-      coef: coef ?? 1.0,
+      visits: visits || [], 
+      coef: coef ?? 1.0,     
     });
 
-    if (!barber) {
-      return res.status(404).json({ error: "Missing fields" });
-    }
+    const translationDocs = await BarberTranslation.insertMany(
+      translation.map((t: any) => ({
+        language: t.language,
+        name: t.name,
+        surname: t.surname,
+        barber: barber._id
+      }))
+    );
+
+    // Link translations to barber
+    barber.translation = translationDocs.map((t: any) => t._id);
 
     await barber.save();
 
     res.status(201).json(barber);
   } catch (e) {
+    console.error("Error adding barber:", e);
     next(e);
   }
 };

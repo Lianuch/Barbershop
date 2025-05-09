@@ -18,7 +18,7 @@ export const loginClient = createAsyncThunk<
       const response = await AuthService.login(email, password);
       localStorage.setItem("token", response.data.accessToken);
       dispatch(setAuth(true));
-      dispatch(setClient(response.data.user));
+      dispatch(setClient(response.data.client));
       return response.data;
     } catch (e: any) {
       const axiosError = e as AxiosError<any>;

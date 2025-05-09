@@ -10,6 +10,7 @@ import { checkAuth } from "./authThunks/checkAuth";
 const initialState:AuthState = {
 client: null,
 isAuth: false,
+isAdmin: false,
 loading: false,
 error: null
 }
@@ -22,6 +23,7 @@ const authSlice = createSlice({
         },
         setClient(state,action:PayloadAction<IClient | null>){
             state.client = action.payload
+            state.isAdmin = action.payload?.role === "admin";
         }
     },
     extraReducers:(builder)=>{
@@ -34,7 +36,8 @@ const authSlice = createSlice({
             .addCase(loginClient.fulfilled,(state,action)=>{
                 state.loading = false
                 state.isAuth = true
-                state.client = action.payload.user
+                state.client = action.payload.client
+                state.isAdmin = state.client?.role === "admin";
             })
             .addCase(loginClient.rejected,(state,action)=>{
                 state.loading = false
@@ -48,7 +51,7 @@ const authSlice = createSlice({
             .addCase(registerUser.fulfilled,(state,action)=>{
                 state.loading = false
                 state.isAuth = true
-                state.client = action.payload.user
+                state.client = action.payload.client
             })
             .addCase(registerUser.rejected,(state,action)=>{
                 state.loading = false
@@ -73,6 +76,8 @@ const authSlice = createSlice({
                 state.loading = false
                 state.isAuth = true
                 state.client = action.payload
+                state.isAdmin = action.payload?.role === "admin";
+
             })
             .addCase(checkAuth.rejected,(state,action)=>{
                state.loading = false

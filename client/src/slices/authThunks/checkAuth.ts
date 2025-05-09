@@ -11,12 +11,12 @@ export const checkAuth = createAsyncThunk(
       const response = await axios.get<AuthResponse>(`${API_URL}/clients/refresh`, {
         withCredentials: true,
       });
-      localStorage.setItem("token", response.data.accessToken);
+        localStorage.setItem("token", response.data.accessToken);
       
       dispatch(setAuth(true));
-      dispatch(setClient(response.data.user));
+      dispatch(setClient(response.data.client));
 
-      return response.data.user;
+      return response.data.client;
     } catch (err: any) {
       return rejectWithValue(
         err.response?.data?.message || "Authentication check failed"

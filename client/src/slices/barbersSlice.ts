@@ -2,10 +2,40 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getBarbers } from "../Services/barbersService";
 import { BarbersState } from "../Types/BarbersState";
 import { Barbers } from "../Types/Barbers";
+import {
+  createBarber,
+  deleteBarber,
+  updateBarber,
+} from "../Services/barbersService";
 
-const fetchBarbers = createAsyncThunk<Barbers[], string>("barbers/fetchBarbers", async (lang) => {
-  return getBarbers(lang);
-});
+const fetchBarbers = createAsyncThunk<Barbers[], string>(
+  "barbers/fetchBarbers",
+  async (lang) => {
+    return getBarbers(lang);
+  }
+);
+
+const addBarber = createAsyncThunk(
+  "barbers/addBarber",
+  async (barber: Barbers) => {
+    return createBarber(barber);
+  }
+);
+
+const removeBarber = createAsyncThunk(
+  "barbers/removeBarber",
+  async (_id: string) => {
+    await deleteBarber(_id);
+    return _id;
+  }
+);
+
+const editBarber = createAsyncThunk(
+  "barbers/editBarber",
+  async ({ id, barber }: { id: string; barber: Barbers }) => {
+    return updateBarber(id, barber);
+  }
+);
 
 const initialState: BarbersState = {
   list: [],
@@ -30,9 +60,28 @@ const barbersSlice = createSlice({
       .addCase(fetchBarbers.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
+      })
+      .addCase(addBarber.fulfilled, (state, action) => {
+        state.list.push(action.payload);
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(removeBarber.fulfilled, (state, action) => {
+        state.list = state.list.filter(
+          (barber) => barber._id !== action.payload
+        );
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(editBarber.fulfilled, (state, action) => {
+        state.list = state.list.map((barber) =>
+          barber._id === action.payload._id ? action.payload : barber
+        );
+        state.loading = false;
+        state.error = null;
       });
   },
 });
 
 export default barbersSlice.reducer;
-export { fetchBarbers };
+export { fetchBarbers, addBarber, removeBarber, editBarber };

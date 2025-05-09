@@ -1,7 +1,7 @@
 import { IoMenu } from "react-icons/io5";
 import { NavLink, useNavigate } from "react-router-dom";
 import { NavLinks } from "../NavLinks/NavLinks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
 import { CiSettings } from "react-icons/ci";
 
@@ -33,8 +33,8 @@ export const Header = () => {
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const { isAuth } = useAppSelector((state) => state.auth);
-  const { isAdmin } = useAppSelector((state) => state.admin);
+  const { isAuth, client, isAdmin } = useAppSelector((state) => state.auth);
+
   const navigate = useNavigate();
 
   const handleProfile = () => {
@@ -95,6 +95,7 @@ export const Header = () => {
                   )}
                 </div>
               </div>
+              
             </div>
             <div className="md:hidden">
               <button type="button" onClick={toggleMenu}>

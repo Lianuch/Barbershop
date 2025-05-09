@@ -83,11 +83,12 @@ class ClientService {
       throw AppError.UnauthorizedError();
     }
 
-    const client = await Client.findById(clientData.id);
+    const client = await Client.findById(clientData.id).select("+role");
     const clientDto = new ClientDto(client);
     const tokens = tokenService.generateTokens({ ...clientDto });
 
     await tokenService.saveToken(clientDto.id, tokens.refreshToken);
+
 
     return { ...tokens, client: clientDto };
   }
