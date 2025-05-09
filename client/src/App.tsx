@@ -18,7 +18,7 @@ import { AdminPanelPage } from "./Pages/AdminPanelPage/AdminPanelPage";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isAuth, loading } = useAppSelector((state) => state.auth);
+  const { isAuth, client, loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -53,12 +53,12 @@ function App() {
         />
 
         <Route path="/activation" element={<ActivationPage />} />
-        {isAuth ? (
+        {isAuth && client?.isActivated ? (
           <Route path="/profile" element={<ProfileLayout />}>
             <Route index element={<UserProfile />} />
           </Route>
         ) : (
-          <Route path="profile" element={<Navigate to="/profile" />} />
+          <Route path="/profile" element={<Navigate to="/activation" />} />
         )}
       </Routes>
       <ToastContainer />

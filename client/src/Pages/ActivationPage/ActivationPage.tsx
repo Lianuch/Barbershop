@@ -1,6 +1,17 @@
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { useEffect } from "react";
 
 export const ActivationPage: React.FC = () => {
 
+  const navigate = useNavigate();
+  const client = useAppSelector((state) => state.auth.client);
+
+  useEffect(() => {
+    if(client?.isActivated){
+      navigate("/")
+    }
+  },[client, navigate]);
   return (
     <div
       className="flex justify-center items-center min-h-screen"

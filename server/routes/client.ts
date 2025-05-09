@@ -22,7 +22,9 @@ clientRouter.post(
   authMiddleware,
   client.requestPasswordChange
 );
-clientRouter.get("/activate/:link");
+// clientRouter.get("/activate/:link");
+clientRouter.get("/activate/:link", client.activate);
+
 clientRouter.get("/refresh", client.refresh);
 clientRouter.get("/", authMiddleware, client.getClients);
 clientRouter.get("/me", authMiddleware, client.getClient);
