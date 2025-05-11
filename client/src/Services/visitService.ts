@@ -5,7 +5,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import IVisit from "../interfaces/IVisit";
 export default class VisitService {
   static fetchVisits(): Promise<AxiosResponse<IVisit[]>> {
-    return $api.get<IVisit[]>("/visits");
+    const token = localStorage.getItem("token");
+    return $api.get<IVisit[]>("/visits",{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }}
 
 export const bookAppointment = createAsyncThunk(

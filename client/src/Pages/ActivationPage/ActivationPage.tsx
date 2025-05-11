@@ -1,15 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useEffect } from "react";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { checkAuth } from "../../slices/authThunks/checkAuth";
 
 export const ActivationPage: React.FC = () => {
 
   const navigate = useNavigate();
   const client = useAppSelector((state) => state.auth.client);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
 
   useEffect(() => {
     if(client?.isActivated){
-      navigate("/")
+      navigate("/profile");
     }
   },[client, navigate]);
   return (

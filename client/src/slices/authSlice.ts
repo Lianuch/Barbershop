@@ -52,6 +52,8 @@ const authSlice = createSlice({
                 state.loading = false
                 state.isAuth = true
                 state.client = action.payload.client
+                state.client.isActivated = action.payload.client?.isActivated;
+
             })
             .addCase(registerUser.rejected,(state,action)=>{
                 state.loading = false
@@ -77,6 +79,8 @@ const authSlice = createSlice({
                 state.isAuth = true
                 state.client = action.payload
                 state.isAdmin = action.payload?.role === "admin";
+                state.client.isActivated = action.payload.isActivated
+
 
             })
             .addCase(checkAuth.rejected,(state,action)=>{

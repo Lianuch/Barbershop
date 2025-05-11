@@ -9,6 +9,7 @@ interface AuthRequest extends Request {
     name: string;
     email: string;
     isActivated: boolean;
+    role: string
   };
 }
 export const authMiddleware = async (

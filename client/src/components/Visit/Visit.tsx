@@ -1,30 +1,37 @@
-import { useEffect, useState } from "react";
-import IVisit from "../../interfaces/IVisit";
-import VisitService from "../../Services/visitService";
+import { useEffect} from "react";
+
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { fetchFavors } from "../../slices/favorsSlice";
 import { useLanguage } from "../../hooks/useLanguage";
 import moment from "moment";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import BeatLoader from "react-spinners/BeatLoader";
+import { fetchVisits } from "../../slices/visitSlice";
 
 export const Visit = () => {
   const { i18n } = useTranslation();
   const { currentLanguage } = useLanguage();
 
-  const [visits, setVisits] = useState<IVisit[]>([]);
+  const { visits, loading, error } = useAppSelector((state) => state.visits);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    VisitService.fetchVisits().then((res) => {
-      // console.log("Visits:", res.data); // <- Check this
-      setVisits(res.data);
-    });
-    dispatch(fetchFavors(i18n.language));
-  }, [dispatch, i18n.language]);
+    dispatch(fetchVisits());
+  }, [dispatch]);
+
+  if (loading) {
+    return (
+      <p>
+        <BeatLoader color="#60BDE6" />
+      </p>
+    );
+  }
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div className="flex flex-col gap-4">
       {visits.map((visit) => {
-     
         const barberTranslation = visit.barber.translation?.find(
           (t) => t.language === currentLanguage
         );
@@ -58,7 +65,7 @@ export const Visit = () => {
               <p className="text-sm text-gray-500">{visit.favor.time}</p>
               <p className="text-lg font-bold">{visit.favor.price} ₴</p>
             </div>
-            
+
             <div className="flex justify-end">
               <p className="text-sm text-gray-600">{formattedDate}</p>
             </div>

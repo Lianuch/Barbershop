@@ -42,13 +42,10 @@ class VisitService {
       return visit;
     
   }
-  async getVisits() {
-    const visits = await Visit.find()
-      // .populate("barber", "image barberCategory translation")
-      // .populate("client", "email")
-      // .populate("favor", "time price translations")
-      // .select("-__v");
+  async getVisits(clientId: string) {
 
+    const visits = await Visit.find({client: clientId})
+   
       .populate({
         path: "barber",
         populate: [
@@ -57,15 +54,17 @@ class VisitService {
         ],
       })
       .populate("client", "email")
+      // .populate("client") // To populate all fields of the client
+
       .populate({
         path: "favor",
         populate: { path: "translations" },
       })
       .select("-__v");
 
-      if (!visits.length) {
-      return AppError.BadRequest("Visits not found");
-    }
+    //   if (!visits.length) {
+    //   return AppError.BadRequest("Visits not found");
+    // }
     return visits;
   }
 }

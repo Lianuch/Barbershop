@@ -8,7 +8,11 @@ import mailService from "../service/mailService";
 import VisitService from "../service/visitService";
 const getVisits = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const visits = await VisitService.getVisits();
+    const clientId = req.client?.id;
+    if(!clientId){
+      return next(AppError.BadRequest("Client not found"));
+    }
+    const visits = await VisitService.getVisits(clientId);
 
     res.status(200).json(visits);
   } catch (e) {
