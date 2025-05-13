@@ -59,6 +59,10 @@ const { list, loading } = useAppSelector((state) => state.barbers);
                 className="text-red-500 text-sm"
               />
             </div>
+
+
+
+
             <div>
               <label className="block font-medium text-sm">Name</label>
               <Field

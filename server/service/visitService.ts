@@ -54,7 +54,6 @@ class VisitService {
         ],
       })
       .populate("client", "email")
-      // .populate("client") // To populate all fields of the client
 
       .populate({
         path: "favor",
@@ -62,11 +61,33 @@ class VisitService {
       })
       .select("-__v");
 
-    //   if (!visits.length) {
-    //   return AppError.BadRequest("Visits not found");
-    // }
+  
     return visits;
   }
+
+async getAllVisits() {
+
+    const visits = await Visit.find()
+   
+      .populate({
+        path: "barber",
+        populate: [
+          { path: "translation" },
+          { path: "barberCategory" },
+        ],
+      })
+      .populate("client", "email")
+
+      .populate({
+        path: "favor",
+        populate: { path: "translations" },
+      })
+      .select("-__v");
+
+  
+    return visits;
+  }
+
 }
 
 export default new VisitService();  

@@ -19,6 +19,17 @@ const getVisits = async (req: Request, res: Response, next: NextFunction) => {
     next(e);
   }
 };
+const getAllVisits = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+ 
+    const visits = await VisitService.getAllVisits();
+
+    res.status(200).json(visits);
+  } catch (e) {
+    next(e);
+  }
+};
+
 const addVisits = async (req: Request, res: Response, next: NextFunction) => {
   const { date, time, barberId, favorId, comment, clientId } = req.body;
   try {
@@ -60,4 +71,4 @@ const addVisits = async (req: Request, res: Response, next: NextFunction) => {
 //   }
 // };
 
-export { getVisits, addVisits };
+export { getVisits, getAllVisits, addVisits };

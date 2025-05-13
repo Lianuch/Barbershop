@@ -12,9 +12,10 @@ import { UserProfile } from "./components/UserProfile/UserProfile";
 import { ProfileLayout } from "./Pages/ProfileLayout/ProfileLayout";
 import { ActivationPage } from "./Pages/ActivationPage/ActivationPage";
 import { ConfirmPasswordChange } from "./components/ConfirmPasswordChange/ConfirmPasswordChange";
-import AddBarber from "./components/AddBarber/AddBarber";
-import { AdminRoute } from "./Routes/AdminRoute";
+
 import { AdminPanelPage } from "./Pages/AdminPanelPage/AdminPanelPage";
+import { Page403 } from "./Pages/Page403/Page403";
+import { Page404 } from "./Pages/Page404/Page404";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -42,9 +43,11 @@ function App() {
         <Route
           path="/admin-panel"
           element={
-            <AdminRoute>
+            isAuth && client?.role === "admin" ? (
               <AdminPanelPage />
-            </AdminRoute>
+            ) : (
+              <Page403 />
+            )
           }
         />
         <Route
@@ -60,6 +63,8 @@ function App() {
         ) : (
           <Route path="/profile" element={<Navigate to="/activation" />} />
         )}
+
+        <Route path="/*" element={<Page404 />} />
       </Routes>
       <ToastContainer />
     </div>

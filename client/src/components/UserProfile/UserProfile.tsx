@@ -6,18 +6,16 @@ import IClient from "../../interfaces/IClient";
 import ClientService from "../../Services/clientService";
 import { useTranslation } from "react-i18next";
 import { Visit } from "../Visit/Visit";
+import { useAppSelector } from "../../hooks/useAppSelector";
 // import { EditUserData } from "../EditUserData/EditUserData";
 
 export const UserProfile: React.FC = () => {
   const [date, setDate] = useState(new Date());
   const [client, setClient] = useState<IClient | null>(null);
-  const navigate = useNavigate();
   const { t } = useTranslation();
-  const [isEditingOpen, setisEditingOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleEdit = () => {
-    setisEditingOpen((prev) => !prev);
-  };
+  const { visits } = useAppSelector((state) => state.visits);
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -111,7 +109,6 @@ export const UserProfile: React.FC = () => {
         <hr />
 
         <div className="flex flex-col gap-6">
-          {/* Profile Section */}
 
           <motion.div
             variants={textAnimation}
@@ -124,12 +121,6 @@ export const UserProfile: React.FC = () => {
               <p className="text-gray-500 text-sm">{client?.email}</p>
             </div>
             <div>
-              {/* <button
-                onClick={handleEdit}
-                className="w-[160px] bg-blue-500 hover:scale-95 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                {t("edit")}
-              </button> */}
               <div
                 className="flex justify-end mt-4"
                 onClick={() => navigate("/")}
@@ -139,13 +130,12 @@ export const UserProfile: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Information Boxes */}
           <motion.h1
             variants={textAnimation}
             custom={5}
             className="text-3xl text-center"
           >
-            {t("visits")}
+            {visits.length === 0 ? t("areVisits") : t("visits")}
           </motion.h1>
           <motion.div
             variants={textAnimation}
@@ -158,12 +148,6 @@ export const UserProfile: React.FC = () => {
           </motion.div>
         </div>
       </div>
-      {/* {isEditingOpen && (
-        <EditUserData
-          isEditingOpen={isEditingOpen}
-          setisEditingOpen={setisEditingOpen}
-        />
-      )} */}
     </motion.div>
   );
 };

@@ -1,6 +1,5 @@
 import { useEffect} from "react";
 
-import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useLanguage } from "../../hooks/useLanguage";
 import moment from "moment";
@@ -9,7 +8,6 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { fetchVisits } from "../../slices/visitSlice";
 
 export const Visit = () => {
-  const { i18n } = useTranslation();
   const { currentLanguage } = useLanguage();
 
   const { visits, loading, error } = useAppSelector((state) => state.visits);

@@ -23,6 +23,7 @@
   "welcome":"Welcome",
   "edit":"Reset password",
   "visits":"Your visits",
+  "areVisits":"You have no visits yet",
   
   "selectEmployee":"Choose a specialist",
   "selectDateTime":"Select date and time",
