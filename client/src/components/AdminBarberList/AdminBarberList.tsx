@@ -13,14 +13,14 @@ export const AdminBarberList: React.FC = () => {
     loading,
     error,
   } = useAppSelector((state) => state.barbers);
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchBarbers(i18n.language));
   }, [dispatch, i18n.language]);
 
   return (
-    <div id="barbers" className="my-8">
+<div id="barbers" className={`my-8 min-h-[200px] ${barbers.length === 0 ? "bg-[#cad2c5]" : ""}`}>
       <div className=" max-w-7xl mx-auto">
         {loading && (
           <p className="text-center">
@@ -38,7 +38,7 @@ export const AdminBarberList: React.FC = () => {
 
         <ul className="gap-2 px-4 ">
           {barbers.map((barber) => (
-            <li key={barber._id}>
+            <li key={barber._id }>
               <AdminBarber barber={barber} />
             </li>
           ))}

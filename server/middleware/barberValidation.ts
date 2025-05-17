@@ -5,9 +5,9 @@ export const barberValidation = (
   res: Response,
   next: NextFunction
 ) => {
-  const { image, barberCategory, translation, visits } = req.body;
+  const { image, barberCategory, translation } = req.body;
   
-  if (!image || !barberCategory || !translation || !visits) {
+  if (!image || !barberCategory || !translation ) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   next();

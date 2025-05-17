@@ -97,7 +97,7 @@ export const Services = ({
                   .map((favor) => {
                     const key = `${barber._id}_${favor._id}`;
                     const priceWithCoef = favor.price * barber.coef;
-                    console.log(favor.price, barber.coef, priceWithCoef);
+                    const formattedPrice = priceWithCoef.toFixed(0);
                     return (
                       <div
                         key={key}
@@ -113,7 +113,7 @@ export const Services = ({
                           </h1>
                           <p className="text-sm text-gray-600">{favor.time}</p>
                           <h1 className="text-md font mt-1">
-                            {favor.price * barber.coef} ₴
+                            {formattedPrice} ₴
                           </h1>
                         </div>
                         <input

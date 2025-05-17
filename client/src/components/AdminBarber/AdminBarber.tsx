@@ -76,6 +76,9 @@ export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
               onChange={(e) => setSurname(e.target.value)}
               className="text-xl font-bold bg-white rounded px-2 mb-1"
             />
+            <select value={category}>
+              <option>1</option>
+            </select>
             <input
               value={category}
               onChange={(e) => setCategory(e.target.value)}

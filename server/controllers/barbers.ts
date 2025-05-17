@@ -26,6 +26,7 @@ const getBarbers = async (req: Request, res: Response, next: NextFunction) => {
 
 const addBarber = async (req: Request, res: Response, next: NextFunction) => {
   try {
+
     const { image, barberCategory, translation, visits, coef } = req.body;
 
     // Check if required fields are provided
@@ -54,10 +55,13 @@ const addBarber = async (req: Request, res: Response, next: NextFunction) => {
       }))
     );
 
-    // Link translations to barber
     barber.translation = translationDocs.map((t: any) => t._id);
-
     await barber.save();
+    if(!category.barbers.includes(barber._id)){
+      
+      category.barbers.push(barber._id);
+    }
+    await category.save();
 
     res.status(201).json(barber);
   } catch (e) {

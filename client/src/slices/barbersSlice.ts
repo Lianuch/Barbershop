@@ -15,12 +15,21 @@ const fetchBarbers = createAsyncThunk<Barbers[], string>(
   }
 );
 
+type NewBarber = Omit<Barbers, "_id" | "translation"> & {
+  translation: {
+    language: string;
+    name: string;
+    surname: string;
+  }[];
+};
+
 const addBarber = createAsyncThunk(
   "barbers/addBarber",
-  async (barber: Barbers) => {
+  async (barber: NewBarber) => {
     return createBarber(barber);
   }
 );
+
 
 const removeBarber = createAsyncThunk(
   "barbers/removeBarber",
