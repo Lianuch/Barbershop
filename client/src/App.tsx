@@ -17,6 +17,7 @@ import { AdminPanelPage } from "./Pages/AdminPanelPage/AdminPanelPage";
 import { Page403 } from "./Pages/Page403/Page403";
 import { Page404 } from "./Pages/Page404/Page404";
 
+
 function App() {
   const dispatch = useAppDispatch();
   const { isAuth, client, loading } = useAppSelector((state) => state.auth);
@@ -66,7 +67,7 @@ function App() {
 
         <Route path="/*" element={<Page404 />} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer  theme="dark" />
     </div>
   );
 }

@@ -95,7 +95,7 @@ const updateBarber = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { image, barberCategory, translation, visits, coef } = req.body;
+  const { image, barberCategory, coef } = req.body;
   try {
     const barber = await Barber.findById(id);
     if (!barber) {
@@ -116,23 +116,12 @@ const updateBarber = async (
       id,
       {
         image: updatedImage,
-        barberCategory,
-        translation,
-        visits,
-        coef: coef ?? 1.0,
+        barberCategory: barberCategory ?? barber.barberCategory,
+        coef: coef ?? barber.coef,
       },
       { new: true }
     );
 
-    if (translation) {
-      for (const trans of translation) {
-        await BarberTranslation.findOneAndUpdate(
-          { barber: id, language: trans.language },
-          { name: trans.name, surname: trans.surname },
-          { upsert: true }
-        );
-      }
-    }
 
     res.status(200).json(updatedBarber);
   } catch (e) {

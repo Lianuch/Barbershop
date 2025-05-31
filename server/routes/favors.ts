@@ -12,7 +12,7 @@ const favorRouter = express.Router();
 
 favorRouter.get("/", getFavors);
 
-favorRouter.post("/", favorValidation, addFavor);
+favorRouter.post("/",  addFavor);
 favorRouter.delete("/:id", deleteFavor);
 favorRouter.put("/:id", favorValidation, updateFavor);
 export { favorRouter };

@@ -1,4 +1,5 @@
 import { Favors } from "../Types/Favors";
+import { NewFavor } from "../Types/NewFavor";
 import $api from "./httpCommon";
 
 const getFavors = async (lang="ua") => {
@@ -8,7 +9,8 @@ const getFavors = async (lang="ua") => {
     return response.data;
 }
 
-const createFavor = async(favor: Favors) => {
+
+const createFavor = async(favor: NewFavor) => {
     const response = await $api.post("/favors", favor);
     return response.data;
 }
@@ -22,4 +24,4 @@ const updateFavor = async(id: string, favor: Favors) => {
     return response.data;
 }
 
-export { getFavors, createFavor };
+export { getFavors, createFavor, deleteFavor, updateFavor };

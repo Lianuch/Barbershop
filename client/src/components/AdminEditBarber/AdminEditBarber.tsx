@@ -1,15 +1,14 @@
 import { BarberProps } from "../../interfaces/BarberProps";
 import { useLanguage } from "../../hooks/useLanguage";
 import { IoMdClose } from "react-icons/io";
-import { CiCircleRemove } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { useState } from "react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { Barbers } from "../../Types/Barbers";
 import { toast } from "react-toastify";
-import { removeBarber } from "../../slices/barbersSlice";
+import { editBarber, removeBarber } from "../../slices/barbersSlice";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
-export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
+export const AdminEditBarber: React.FC<BarberProps> = ({ barber }) => {
   const { currentLanguage } = useLanguage();
   const barberTranslation = barber.translation.find(
     (t) => t.language === currentLanguage
@@ -19,19 +18,42 @@ export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [image, setImage] = useState("");
-  const [name, setName] = useState(barberTranslation?.name || "");
-  const [surname, setSurname] = useState(barberTranslation?.surname || "");
+  const [coeficient, setCoeficient] = useState(barber.coef);
+
   const [category, setCategory] = useState(
     barber.barberCategory?.categoryName || ""
   );
 
-  const handleSave = () => {
-    console.log("Saving updated barber:", {
-      name,
-      surname,
-      category,
-    });
+  const { list } = useAppSelector((state) => state.barbers);
+
+  const categories = list.map((barber) => ({
+    id: barber.barberCategory?._id,
+    name: barber.barberCategory?.categoryName,
+  }));
+  const handleEdit = () => {
+    const updatedBarber = {
+      ...barber,
+      image,
+      coef: coeficient,
+      translation: barber.translation,
+      barberCategory: {
+        ...barber.barberCategory,
+        categoryName: category || barber.barberCategory?.categoryName,
+      },
+    };
+    dispatch(editBarber({ id: barber._id, barber: updatedBarber }));
     setIsEditing(false);
+
+    setTimeout(() => {
+      toast.success("Barber updated successfully!", {
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "dark",
+      });
+    }, 1000);
   };
 
   const handleDelete = () => {
@@ -39,15 +61,14 @@ export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
     setShowDeleteConfirmation(false);
     setTimeout(() => {
       toast.success("Barber deleted successfully!", {
-        autoClose: 2000, 
+        autoClose: 2000,
         hideProgressBar: true,
-        closeOnClick: true, 
-        pauseOnHover: false, 
+        closeOnClick: true,
+        pauseOnHover: false,
         draggable: false,
-        theme: "dark", 
+        theme: "dark",
       });
     }, 1000);
-
   };
 
   return (
@@ -58,35 +79,44 @@ export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
         className="h-[70px] w-[70px] rounded-lg object-cover"
       />
 
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 gap-2">
         {isEditing ? (
           <>
             <input
               value={image}
+              placeholder="Image URL"
               onChange={(e) => setImage(e.target.value)}
-              className="text-xl font-bold bg-white rounded px-2 mb-1"
+              className="w-full p-1 border border-gray-300 rounded-md "
             />
+
             <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="text-xl font-bold bg-white rounded px-2 mb-1"
+              name="coeficient"
+              type="number"
+              min="1.0"
+              max="3.0"
+              step="0.01"
+              value={coeficient}
+              onChange={(e) => setCoeficient(parseFloat(e.target.value))}
+              className="w-full p-1 border text-black border-gray-300 rounded-md"
             />
-            <input
-              value={surname}
-              onChange={(e) => setSurname(e.target.value)}
-              className="text-xl font-bold bg-white rounded px-2 mb-1"
-            />
-            <select value={category}>
-              <option>1</option>
-            </select>
-            <input
+
+            <select
+              className="w-full p-2 border text-black border-gray-300 rounded-md"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="text-sm bg-white rounded px-2"
-            />
+            >
+              <option value="" disabled>
+                Select a category
+              </option>
+              {categories.map((cat, index) => (
+                <option value={cat.name} key={cat.id || index}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
             <button
-              onClick={handleSave}
-              className="mt-2 px-2 py-1 bg-green-500 text-white rounded text-sm w-fit"
+              onClick={handleEdit}
+              className="mt-2 px-2 py-1 bg-green-700 hover:bg-green-800 text-white rounded text-sm w-fit"
             >
               Save
             </button>
@@ -124,7 +154,12 @@ export const AdminBarber: React.FC<BarberProps> = ({ barber }) => {
               >
                 Yes
               </button>
-              <button onClick={() => setShowDeleteConfirmation(false)} className="bg-blue-500 p-1 rounded-md">No</button>
+              <button
+                onClick={() => setShowDeleteConfirmation(false)}
+                className="bg-blue-500 p-1 rounded-md"
+              >
+                No
+              </button>
             </div>
           </div>
         )}

@@ -4,4 +4,5 @@ export type BarbersState = {
     list: Barbers[],
     loading: boolean;
     error: null | string; 
+    lastUpdated: number | null ,
 }

@@ -30,7 +30,6 @@ const addBarber = createAsyncThunk(
   }
 );
 
-
 const removeBarber = createAsyncThunk(
   "barbers/removeBarber",
   async (_id: string) => {
@@ -50,6 +49,7 @@ const initialState: BarbersState = {
   list: [],
   loading: false,
   error: null,
+  lastUpdated: null,
 };
 
 const barbersSlice = createSlice({
@@ -69,11 +69,29 @@ const barbersSlice = createSlice({
       .addCase(fetchBarbers.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
+        state.lastUpdated = Date.now();
+      })
+      .addCase(addBarber.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addBarber.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Error adding barber";
       })
       .addCase(addBarber.fulfilled, (state, action) => {
         state.list.push(action.payload);
         state.loading = false;
         state.error = null;
+        state.lastUpdated = Date.now();
+      })
+      .addCase(removeBarber.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeBarber.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Error removing barber";
       })
       .addCase(removeBarber.fulfilled, (state, action) => {
         state.list = state.list.filter(
@@ -81,13 +99,16 @@ const barbersSlice = createSlice({
         );
         state.loading = false;
         state.error = null;
+        state.lastUpdated = Date.now();
       })
       .addCase(editBarber.fulfilled, (state, action) => {
         state.list = state.list.map((barber) =>
-          barber._id === action.payload._id ? action.payload : barber
+          barber._id === action.payload._id ? {...barber, ...action.payload} : barber
         );
         state.loading = false;
         state.error = null;
+        state.lastUpdated = Date.now();
+
       });
   },
 });

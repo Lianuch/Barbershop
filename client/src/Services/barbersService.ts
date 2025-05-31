@@ -14,7 +14,6 @@ type NewBarber = Omit<Barbers, "_id" | "translation"> & {
 };
 
 const createBarber = async (barber: NewBarber) => {
-  console.log("Payload being sent to backend:", barber);
   
   const response = await $api.post("/barbers", barber);
   return response.data;
@@ -25,8 +24,15 @@ const deleteBarber = async(id: string) => {
     return response.data;
 }
 
+
 const updateBarber = async(id: string, barber: Barbers) => {
-    const response = await $api.put(`/barbers/${id}`, barber);
+    const { image, coef, barberCategory } = barber;
+    const updatedBarber = {
+      image,
+      coef,
+      barberCategory,
+    };
+    const response = await $api.put(`/barbers/${id}`, updatedBarber);
     return response.data;
 }
 

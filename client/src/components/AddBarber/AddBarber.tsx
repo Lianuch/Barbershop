@@ -1,21 +1,14 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { AdminBarberList } from "../AdminBarberList/AdminBarberList";
+import { AdminEditBarberList } from "../AdminEditBarberList/AdminEditBarberList";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { addBarber } from "../../slices/barbersSlice";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useState } from "react";
 import { IoIosPeople } from "react-icons/io";
+import { AddBarberSchema } from "../../schemas";
 
-const AddBarberSchema = Yup.object().shape({
-  image: Yup.string().url("Invalid URL").required("Image is required"),
-  nameEn: Yup.string().required("Name is required"),
-  nameUa: Yup.string().required("Name is required"),
-  surnameEn: Yup.string().required("Surname is required"),
-  surnameUa: Yup.string().required("Surname is required"),
-  coef: Yup.number().min(0.1).required("Coefficient is required"),
-});
+
 
 const AddBarber = () => {
   const dispatch = useAppDispatch();
@@ -50,15 +43,15 @@ const AddBarber = () => {
       toast.success("Barber added successfully!");
     } catch (error) {
       toast.error("Failed to add barber. Please try again.");
+      console.log(error);
     }
   };
 
-  const [showBarberList, setShowBarberList] = useState(false);
+  const [showBarberList, setShowBarberList] = useState <Boolean>(false);
 
   return (
-    <div className="w-1/2 mx-auto">
-      <h2 className="text-center text-3xl font-bold mb-2">Admin Panel</h2>
-
+    <div>
+    
       <Formik
         initialValues={{
           image: "",
@@ -73,7 +66,7 @@ const AddBarber = () => {
         onSubmit={handleCreateSubmit}
       >
         {({ isSubmitting }) => (
-          <Form className="space-y-4 p-6 rounded-lg shadow-lg bg-slate-200">
+          <Form >
             <h2 className="text-center text-xl font-bold">Add New Barber</h2>
             <div>
               <label className="block font-medium text-sm">Image URL</label>
@@ -180,7 +173,9 @@ const AddBarber = () => {
               <Field
                 name="coef"
                 type="number"
-                step="0.1"
+                min="1.0"
+                max="3.0"
+                step="0.01"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
               <ErrorMessage
@@ -193,9 +188,10 @@ const AddBarber = () => {
             <button
               type="submit"
               disabled={isSubmitting || loading}
-              className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
+              className="w-full mt-2 bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
             >
-              {loading ? "Adding..." : "Add Barber"}
+              {/* {loading ? "Adding..." : "Add Barber"} */}
+              Add Barber
             </button>
 
             <button
@@ -210,16 +206,17 @@ const AddBarber = () => {
                 </>
               ) : (
                 <>
-                  <p>Show Barber List</p>
+                  <p>Barber List</p>
                   <IoIosPeople size={25} />
                 </>
               )}
             </button>
 
-            {showBarberList && <AdminBarberList />}
+            {showBarberList && <AdminEditBarberList />}
           </Form>
         )}
       </Formik>
+
     </div>
   );
 };
