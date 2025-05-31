@@ -9,6 +9,7 @@ export default interface IVisit {
     barber: Barbers;
     client: {
         _id: string;
+        name: string;
         email: string;
     };
     favor: Favors;

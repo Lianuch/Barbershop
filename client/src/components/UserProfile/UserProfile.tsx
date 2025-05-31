@@ -11,11 +11,12 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 
 export const UserProfile: React.FC = () => {
   const [date, setDate] = useState(new Date());
-  const [client, setClient] = useState<IClient | null>(null);
+  const [user, setUser] = useState<IClient | null>(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { visits } = useAppSelector((state) => state.visits);
+  const { isAuth, client } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -29,13 +30,13 @@ export const UserProfile: React.FC = () => {
         const response = await ClientService.fetchClient(token);
 
         if (response?.data) {
-          setClient(response.data);
+          setUser(response.data);
         } else {
-          setClient(null);
+          setUser(null);
         }
       } catch (e) {
         console.log(e);
-        setClient(null);
+        setUser(null);
       }
     };
 
@@ -116,9 +117,9 @@ export const UserProfile: React.FC = () => {
             className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow"
           >
             <div className="flex-grow">
-              <h2 className="text-lg font-semibold">{client?.name}</h2>
+              <h2 className="text-lg font-semibold">{user?.name}</h2>
 
-              <p className="text-gray-500 text-sm">{client?.email}</p>
+              <p className="text-gray-500 text-sm">{user?.email}</p>
             </div>
             <div>
               <div
@@ -135,7 +136,7 @@ export const UserProfile: React.FC = () => {
             custom={5}
             className="text-3xl text-center"
           >
-            {visits.length === 0 ? t("areVisits") : t("visits")}
+            {isAuth && client?.role === "admin" ? t("allVisits") : visits.length === 0 ? t("areVisits") : t("visits") } 
           </motion.h1>
           <motion.div
             variants={textAnimation}

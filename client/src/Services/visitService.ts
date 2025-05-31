@@ -6,21 +6,24 @@ import IVisit from "../interfaces/IVisit";
 export default class VisitService {
   static fetchVisits(): Promise<AxiosResponse<IVisit[]>> {
     const token = localStorage.getItem("token");
-    return $api.get<IVisit[]>("/visits",{
+    return $api.get<IVisit[]>("/visits", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-  }}
+  }
+
+  static getAllVisits(): Promise<AxiosResponse<IVisit[]>> {
+    return $api.get<IVisit[]>("/visits/all-visits");
+  }
+}
 
 export const bookAppointment = createAsyncThunk(
   "appointments/book",
   async (appointmentData: any) => {
     // console.log(appointmentData);
     const token = localStorage.getItem("token");
-    console.log("token", token);
-
-  
+    // console.log("token", token);
 
     const response = await $api.post("/visits", appointmentData, {
       headers: {
@@ -29,9 +32,7 @@ export const bookAppointment = createAsyncThunk(
       },
     });
 
-
-
-    console.log("response data ",response.data);
+    // console.log("response data ",response.data);
 
     return response.data;
   }

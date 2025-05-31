@@ -76,8 +76,10 @@ async getAllVisits() {
           { path: "barberCategory" },
         ],
       })
-      .populate("client", "email")
-
+  .populate({
+    path: "client",
+    select: "name email", 
+  })
       .populate({
         path: "favor",
         populate: { path: "translations" },
