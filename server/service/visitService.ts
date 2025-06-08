@@ -16,42 +16,44 @@ class VisitService {
   ) {
     if (!date || !time || !barberId || !favorId || !clientId) {
       throw AppError.BadRequest("All fields are required");
-      }
-  
-      const clientData = await Client.findById(clientId);
-      const visit = await Visit.create({
-        date: new Date(date),
-        time:time,
-        barber: barberId,
-        favor: favorId,
-        client: clientId,
-        comment: comment || null,
-      });
-  
-      await visit.save();
-  
-      await Promise.all([
-        Barber.findByIdAndUpdate(barberId, { $push: { visits: visit._id } }),
-        Favor.findByIdAndUpdate(favorId, { $push: { visits: visit._id } }),
-        Client.findByIdAndUpdate(clientId, { $push: { visits: visit._id } }),
-      ]);
-      if (clientData.email) {
-        await mailService.sendRecordInformation(clientData.email, date);
-      }
-  
-      return visit;
-    
+    }
+
+    const clientData = await Client.findById(clientId);
+   
+
+    const isoDate = new Date(date).toISOString().split("T")[0];
+    const combinedDateTime = new Date(`${isoDate}T${time}:00`);
+    if (isNaN(combinedDateTime.getTime())) {
+      throw AppError.BadRequest("Invalid date or time format");
+    }
+    const visit = await Visit.create({
+      date: new Date(combinedDateTime),
+      time,
+      barber: barberId,
+      favor: favorId,
+      client: clientId,
+      comment: comment || null,
+    });
+
+    await visit.save();
+
+    await Promise.all([
+      Barber.findByIdAndUpdate(barberId, { $push: { visits: visit._id } }),
+      Favor.findByIdAndUpdate(favorId, { $push: { visits: visit._id } }),
+      Client.findByIdAndUpdate(clientId, { $push: { visits: visit._id } }),
+    ]);
+    if (clientData.email) {
+      await mailService.sendRecordInformation(clientData.email, date);
+    }
+
+    return visit;
   }
   async getVisits(clientId: string) {
+    const visits = await Visit.find({ client: clientId })
 
-    const visits = await Visit.find({client: clientId})
-   
       .populate({
         path: "barber",
-        populate: [
-          { path: "translation" },
-          { path: "barberCategory" },
-        ],
+        populate: [{ path: "translation" }, { path: "barberCategory" }],
       })
       .populate("client", "email")
 
@@ -61,35 +63,28 @@ class VisitService {
       })
       .select("-__v");
 
-  
     return visits;
   }
 
-async getAllVisits() {
-
+  async getAllVisits() {
     const visits = await Visit.find()
-   
+
       .populate({
         path: "barber",
-        populate: [
-          { path: "translation" },
-          { path: "barberCategory" },
-        ],
+        populate: [{ path: "translation" }, { path: "barberCategory" }],
       })
-  .populate({
-    path: "client",
-    select: "name email", 
-  })
+      .populate({
+        path: "client",
+        select: "name email",
+      })
       .populate({
         path: "favor",
         populate: { path: "translations" },
       })
       .select("-__v");
 
-  
     return visits;
   }
-
 }
 
-export default new VisitService();  
+export default new VisitService();

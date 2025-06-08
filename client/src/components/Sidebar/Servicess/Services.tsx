@@ -15,6 +15,7 @@ export const Services = ({
 
   const { list: barbers, loading } = useAppSelector((state) => state.barbers);
   const { favors } = useAppSelector((state) => state.favors);
+console.log(favors);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);

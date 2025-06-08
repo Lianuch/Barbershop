@@ -40,11 +40,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
     }
   }, [selectedEmployee, selectedDate, selectedTime, selectedService]);
 
-useEffect(()=>{
-  if (isOpen && !isAuth) {
-    setShowSignupModal(true);
-  }
-},[isOpen, isAuth]);
+  useEffect(() => {
+    if (isOpen && !isAuth) {
+      setShowSignupModal(true);
+    }
+  }, [isOpen, isAuth]);
 
   const dispatch = useAppDispatch();
 
@@ -63,7 +63,6 @@ useEffect(()=>{
   const [showSignupModal, setShowSignupModal] = useState(false);
 
   const handleBookAppointment = () => {
-  
     if (
       !selectedEmployee ||
       !selectedDate ||
@@ -74,10 +73,13 @@ useEffect(()=>{
       return;
     }
 
+const dateTimeString = `${selectedDate.format("YYYY-MM-DD")}T${selectedTime}:00`;
+const choosenDate = new Date(dateTimeString);
+
     const appointmentData = {
       clientId: client.id,
       barberId: selectedEmployee,
-      date: new Date(selectedDate.toISOString()),
+      date: choosenDate,
       time: selectedTime,
       comment: "",
       favorId: selectedService,

@@ -47,10 +47,5 @@ const clientSchema = new mongoose.Schema<IClient>({
   }
 });
 
-
-
-
-
-
 const Client = mongoose.model<IClient>("Client", clientSchema);
 export { Client };

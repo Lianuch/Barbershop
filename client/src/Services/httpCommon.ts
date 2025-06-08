@@ -3,7 +3,6 @@ import { AuthResponse } from "../interfaces/authResponse";
 
 export const API_URL = "http://localhost:5000/api";
 const $api = axios.create({
-  // baseURL: "http://localhost:5000",
   baseURL: API_URL,
   headers: {
     "Content-type": "application/json",

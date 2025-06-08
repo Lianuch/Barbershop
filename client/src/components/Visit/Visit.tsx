@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useLanguage } from "../../hooks/useLanguage";
-import moment from "moment";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import BeatLoader from "react-spinners/BeatLoader";
 import { fetchVisits, fetchAllVisits } from "../../slices/visitSlice";
+import moment from "moment-timezone";
+import BeatLoader from "react-spinners/BeatLoader";
 
 export const Visit = () => {
   const { currentLanguage } = useLanguage();
@@ -42,7 +41,11 @@ export const Visit = () => {
         const favorTranslation = visit.favor.translations?.find(
           (t) => t.language === currentLanguage
         );
-        const formattedDate = moment(visit.date).format("MMMM Do YYYY, HH:mm");
+        const formattedDate = moment(visit.date)
+          .tz("Europe/Kyiv")
+          .format("MMMM Do YYYY, HH:mm");
+        // console.log(visit.date);
+        // console.log(formattedDate);
 
         return (
           <div key={visit._id} className="bg-white p-4 rounded-lg shadow-lg ">
@@ -71,7 +74,15 @@ export const Visit = () => {
               <p className="text-sm text-gray-500">{visit.favor.time}</p>
               <p className="text-lg font-bold">{visit.favor.price} ₴</p>
             </div>
+
             <hr className="my-2" />
+            {isAuth && client?.role === "client" && (
+              <div className="flex justify-end">
+                <p className="text-sm text-gray-600 whitespace-nowrap">
+                  {formattedDate}
+                </p>
+              </div>
+            )}
 
             {isAuth && client?.role === "admin" && (
               <div className="flex justify-between items-center border-b pb-2 mb-4">

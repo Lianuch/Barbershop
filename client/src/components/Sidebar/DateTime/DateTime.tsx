@@ -1,10 +1,8 @@
-import { useTranslation } from "react-i18next";
 import { DateTimeProps } from "../../../interfaces/DateTimeProps";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import  { Dayjs } from "dayjs";
-import { useState } from "react";
 
 export const DateTime: React.FC<DateTimeProps> = ({
   selectedTime,
@@ -12,7 +10,6 @@ export const DateTime: React.FC<DateTimeProps> = ({
   selectedDate,
   setSelectedDate,
 }) => {
-  const { t } = useTranslation();
 
   const timeSlots = [
     { label: "9:00", hour: 9 },
